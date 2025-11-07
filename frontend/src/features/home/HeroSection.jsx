@@ -1,7 +1,6 @@
 import React from 'react'
 import hero from '../../assets/images/hero.png'
 import { Button } from '../../components/ui/button.jsx'
-import { Ghost } from 'lucide-react'
 
 export default function HeroSection() {
   return (
@@ -10,7 +9,7 @@ export default function HeroSection() {
         <p className="text-xl text-center sm:text-2xl md:text-3xl lg:text-4xl font-semibold">
           Rocket single seater
         </p>
-        <Button variant={Ghost} className="border-b-2 font-semibold border-black cursor-pointer rounded-none inline-flex px-0">
+        <Button variant="ghost" className="hover:bg-transparent focus:bg-transparent border-b-2 font-semibold border-black cursor-pointer rounded-none inline-flex px-0">
           Shop Now
         </Button>
       </div>

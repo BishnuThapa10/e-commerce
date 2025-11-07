@@ -15,7 +15,7 @@ export default function TopSection() {
           <p className="text-sm text-center sm:text-md md:text-lg lg:text-xl font-semibold">
             Side Table
           </p>
-          <Button variant={Ghost} className="border-b-2 font-semibold border-black cursor-pointer rounded-none inline-flex px-0">
+          <Button variant="ghost" className="hover:bg-transparent focus:bg-transparent border-b-2 font-semibold border-black cursor-pointer rounded-none inline-flex px-0">
             View More
           </Button>
         </div>
@@ -29,7 +29,7 @@ export default function TopSection() {
           <p className="text-sm text-center sm:text-md md:text-lg lg:text-xl font-semibold">
             Side Table
           </p>
-          <Button variant={Ghost} className="border-b-2 font-semibold border-black cursor-pointer rounded-none inline-flex px-0">
+          <Button variant="ghost" className="hover:bg-transparent focus:bg-transparent border-b-2 font-semibold border-black cursor-pointer rounded-none inline-flex px-0">
             View More
           </Button>
         </div>
