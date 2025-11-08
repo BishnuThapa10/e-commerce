@@ -1,6 +1,5 @@
 import React from 'react'
 import { Button } from '../ui/button.jsx'
-import { Ghost } from 'lucide-react'
 import mirror from '../../assets/images/mirror.png'
 
 export default function FourItemList() {
