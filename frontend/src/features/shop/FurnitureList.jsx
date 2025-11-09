@@ -5,9 +5,10 @@ import { BsViewList } from "react-icons/bs";
 import { RxDividerVertical } from "react-icons/rx";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '../../components/ui/select.jsx';
 import mirror from '../../assets/images/mirror.png'
-import { Button } from '../../components/ui/button.jsx';
+import { useNavigate } from 'react-router';
 
 export default function FurnitureList() {
+  const nav = useNavigate()
   return (
     <div className='p-0'>
 
@@ -74,7 +75,7 @@ export default function FurnitureList() {
       {/* Products Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 py-4 px-8">
 
-        <div className='flex flex-col items-center justify-center gap-2 overflow-hidden'>
+        <div className='flex flex-col items-center justify-center gap-2 overflow-hidden' onClick={() => nav(`/furniture`)}>
           <div>
             <img src={mirror} alt="" className='w-full h-full object-cover object-center' />
           </div>
