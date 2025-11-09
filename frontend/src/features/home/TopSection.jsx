@@ -2,7 +2,6 @@ import React from 'react'
 import sideTable from '../../assets/images/sideTable.png'
 import sofa from '../../assets/images/sofa.png'
 import { Button } from '../../components/ui/button.jsx'
-import { Ghost } from 'lucide-react'
 
 export default function TopSection() {
   return (
