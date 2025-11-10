@@ -5,10 +5,10 @@ import "@smastrom/react-rating/style.css";
 import { RxDividerVertical } from "react-icons/rx";
 import SizeSelector from './SizeSelector.jsx';
 import ColorSelection from './ColorSelection.jsx';
-import { Button } from '../../components/ui/button.jsx';
 import AddToCart from '../cart/AddToCart.jsx';
 import FurnitureIdSection from './FurnitureIdSection.jsx';
 import TabSection from './TabSection.jsx';
+import FourItemList from '../../components/website/FourItemList.jsx';
 
 
 export default function FurnitureDetail() {
@@ -84,6 +84,12 @@ export default function FurnitureDetail() {
       </div>
 
       <TabSection />
+
+      <div className='flex flex-col items-center justify-center gap-2'>
+        <h1 className='text-md sm:text-lg md:text-xl lg:text-2xl font-semibold'>Related Products</h1>
+      </div>
+      <FourItemList/>
+
     </div>
   )
 }

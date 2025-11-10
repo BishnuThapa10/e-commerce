@@ -9,12 +9,16 @@ import InstagramSection from './InstagramSection.jsx'
 export default function Home() {
   return (
     <div>
-      <HeroSection/>
-      <TopSection/>
-      <FourItemList/>
-      <NewArrivals/>
-      <BlogSection/>
-      <InstagramSection/>
+      <HeroSection />
+      <TopSection />
+      <div className='flex flex-col items-center justify-center gap-2'>
+        <h1 className='text-md sm:text-lg md:text-xl lg:text-2xl font-semibold'>Top Picks For You</h1>
+        <p className='text-xs text-justify text-[#9F9F9F]'>Find a bright ideal to suit your taste with our great selection of suspension, floor and table lights.</p>
+      </div>
+      <FourItemList />
+      <NewArrivals />
+      <BlogSection />
+      <InstagramSection />
     </div>
   )
 }
