@@ -7,6 +7,7 @@ import Shop from './features/shop/Shop.jsx';
 import FurnitureDetail from './features/shop/FurnitureDetail.jsx';
 import Account from './features/account/Account.jsx';
 import Checkout from './features/checkout/Checkout.jsx';
+import CartPage from './features/cart/CartPage.jsx';
 
 export default function App() {
   const router = createBrowserRouter([
@@ -37,6 +38,11 @@ export default function App() {
         {
           path:'checkout',
           element: <Checkout/>
+        },
+
+        {
+          path:'cart',
+          element: <CartPage/>
         },
       ]
 

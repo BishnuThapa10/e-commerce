@@ -1,6 +1,6 @@
 import React from 'react'
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from '../ui/navigation-menu.jsx';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu.jsx';
 import { TbUserExclamation } from 'react-icons/tb';
 import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet.jsx';
@@ -10,6 +10,7 @@ import { HiOutlineShoppingCart } from "react-icons/hi";
 
 export default function Header() {
   const { pathname } = useLocation();
+  const nav  = useNavigate();
   const links = [
     { to: "/", label: "Home" },
     { to: "/shop", label: "Shop" },
@@ -82,7 +83,7 @@ export default function Header() {
             </button>
 
             <button
-              // onClick={handelLike}
+              onClick={() => nav(`/cart`)}
               className="w-9 h-9 py-2 px-1 flex items-center justify-center cursor-pointer transition disabled:opacity-50 hover:bg-transparent"
             >
               <HiOutlineShoppingCart className="w-full h-full" />
