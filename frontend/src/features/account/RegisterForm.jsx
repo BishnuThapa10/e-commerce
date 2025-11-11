@@ -3,9 +3,8 @@ import React from 'react'
 import * as Yup from "yup";
 import { Input } from '../../components/ui/input.jsx';
 import { Button } from '../../components/ui/button.jsx';
-import { Checkbox } from '../../components/ui/checkbox.jsx';
 
-const LoginSchema = Yup.object().shape({
+const RegisterSchema = Yup.object().shape({
   username: Yup.string().min(5, "Atleast 5 character long!").required("Required"),
   email: Yup.string().email("Invalid email").required("Required"),
   password: Yup.string().min(8, "Minimunm 8 words!").required("Required"),
@@ -17,7 +16,7 @@ export default function RegisterForm({ setMode }) {
       <h3 className='text-lg font-semibold'>Register</h3>
       <Formik
         initialValues={{ username: "", email: "", password: "" }}
-        validationSchema={LoginSchema}
+        validationSchema={RegisterSchema}
         onSubmit={(values) => {
           console.log(values);
         }}
