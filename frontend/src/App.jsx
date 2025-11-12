@@ -8,6 +8,7 @@ import FurnitureDetail from './features/shop/FurnitureDetail.jsx';
 import Account from './features/account/Account.jsx';
 import Checkout from './features/checkout/Checkout.jsx';
 import CartPage from './features/cart/CartPage.jsx';
+import ContactPage from './features/contact/ContactPage.jsx';
 
 export default function App() {
   const router = createBrowserRouter([
@@ -43,6 +44,11 @@ export default function App() {
         {
           path:'cart',
           element: <CartPage/>
+        },
+
+        {
+          path:'contact',
+          element: <ContactPage/>
         },
       ]
 
