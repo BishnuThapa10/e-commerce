@@ -3,8 +3,10 @@ import { Button } from '../../components/ui/button.jsx'
 import blog from '../../assets/images/blog.jpg'
 import { FaRegClock } from "react-icons/fa";
 import { FiCalendar } from "react-icons/fi";
+import { useNavigate } from 'react-router';
 
 export default function BlogSection() {
+  const nav = useNavigate();
   return (
     <div className='flex flex-col justify-center items-center p-4 space-y-5'>
       <div className='flex flex-col items-center justify-center gap-2'>
@@ -68,7 +70,9 @@ export default function BlogSection() {
         </div>
 
       </div>
-      <Button variant="ghost" className="hover:bg-transparent focus:bg-transparent border-b-2 border-black font-medium cursor-pointer rounded-none inline-flex px-0">
+      <Button variant="ghost"
+        onClick = {() => nav(`/blog`)}
+        className="hover:bg-transparent focus:bg-transparent border-b-2 border-black font-medium cursor-pointer rounded-none inline-flex px-0">
         View All Post
       </Button>
     </div>

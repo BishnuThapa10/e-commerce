@@ -9,50 +9,56 @@ import Account from './features/account/Account.jsx';
 import Checkout from './features/checkout/Checkout.jsx';
 import CartPage from './features/cart/CartPage.jsx';
 import ContactPage from './features/contact/ContactPage.jsx';
+import Blog from './features/blog/Blog.jsx';
 
 export default function App() {
   const router = createBrowserRouter([
     {
-      path:'/',
-      element: <RootLayout/>,
+      path: '/',
+      element: <RootLayout />,
       children: [
         {
-          index : true,
-          element : <Home/>
+          index: true,
+          element: <Home />
         },
 
         {
-          path:'shop',
-          element: <Shop/>
+          path: 'shop',
+          element: <Shop />
         },
 
         {
-          path:'furniture',
-          element: <FurnitureDetail/>
+          path: 'furniture',
+          element: <FurnitureDetail />
         },
 
         {
-          path:'account',
-          element: <Account/>
+          path: 'account',
+          element: <Account />
         },
 
         {
-          path:'checkout',
-          element: <Checkout/>
+          path: 'checkout',
+          element: <Checkout />
         },
 
         {
-          path:'cart',
-          element: <CartPage/>
+          path: 'cart',
+          element: <CartPage />
         },
 
         {
-          path:'contact',
-          element: <ContactPage/>
+          path: 'contact',
+          element: <ContactPage />
+        },
+
+        {
+          path: 'blog',
+          element: <Blog />
         },
       ]
 
     }
   ]);
-  return <RouterProvider router={router}/>
+  return <RouterProvider router={router} />
 }
