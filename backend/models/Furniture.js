@@ -1,6 +1,30 @@
 import mongoose from "mongoose";
 
 
+export const colorsEnum = [
+  { name: "Blue", hex: "#816DFA" },
+  { name: "Black", hex: "#000000" },
+  { name: "Yellow", hex: "#CDBA7B" },
+];
+
+export const sizeEnum = [
+  "L", "XL", "XS"
+]
+
+export const categoryEnum = [
+  "Chair",
+  "Table",
+  "Sofa",
+  "Bed",
+  "Cabinet",
+  "Shelf",
+  "Outdoor",
+  "Other",
+]
+
+export const roomTypeEnum = ["Home", "Office", "Shop", "Outdoor", "Other"]
+
+
 const furnitureSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -95,26 +119,3 @@ furnitureSchema.pre("save", function (next) {
 
 const Furniture = mongoose.model('Furniture', furnitureSchema);
 export default Furniture;
-
-export const colorsEnum = [
-  { name: "Blue", hex: "#816DFA" },
-  { name: "Black", hex: "#000000" },
-  { name: "Yellow", hex: "#CDBA7B" },
-];
-
-export const sizeEnum = [
-  "L", "XL", "XS"
-]
-
-export const categoryEnum = [
-  "Chair",
-  "Table",
-  "Sofa",
-  "Bed",
-  "Cabinet",
-  "Shelf",
-  "Outdoor",
-  "Other",
-]
-
-export const roomTypeEnum = ["Home", "Office", "Shop", "Outdoor", "Other"]
