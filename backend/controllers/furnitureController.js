@@ -3,6 +3,89 @@ import { upload } from "../middlewares/multer.js";
 import Furniture from "../models/Furniture.js";
 import { removeImage } from "../utils/removeImage.js";
 
+
+
+// Get all Data
+export const getMultipleData = async (req, res) => {
+  try {
+    const queryObject = { ...req.query };
+    const excludedFields = ['sort', 'fields', 'search', 'page', 'limit', 'skip'];
+    excludedFields.forEach((field) => {
+      delete queryObject[field]
+    })
+
+    // Search Handling
+    if (req.query.search) {
+      const searchText = req.query.search;
+
+      const regex = new RegExp(searchText, "i");
+
+      queryObject.$or = [
+        { name: regex },
+        { category: regex },
+        { roomType: regex },
+        // { description: regex },
+        { tags: { $in: [regex] } }
+      ];
+    }
+
+    let query = Furniture.find(queryObject);
+
+    // SORTING
+    if (req.query.sort) {
+      const sorting = req.query.sort.split(',').join(' ');
+      query = query.sort(sorting);
+    } else {
+      query = query.sort('-createdAt'); // default: newest first
+    }
+
+    // FIELD SELECTION
+    if (req.query.fields) {
+      const fields = req.query.fields.split(',').join(' ');
+      query = query.select(fields);
+    }
+
+    // Pagination and Limit
+    const limit = Math.min(Math.max(parseInt(req.query.limit, 10) || 10, 1), 100);
+    const page = Math.max(parseInt(req.query.page, 10) || 1, 1);
+    const skip = (page - 1) * limit;
+
+    query = query.skip(skip).limit(limit);
+
+    // Execute query and count total items
+    const [furniture, totalItems] = await Promise.all([
+      query,
+      Furniture.countDocuments(queryObject)
+    ]);
+    const totalPage = Math.ceil(totalItems / limit);
+    return res.status(200).json({
+      furniture,
+      totalItems,
+      page,
+      totalPage
+    })
+
+  } catch (err) {
+    return res.status(500).json({ message: err?.message });
+  }
+}
+
+// get singleData
+export const getSingleData = async (req, res) => {
+
+  const { id } = req.params;
+  try {
+    if (!mongoose.isValidObjectId(id)) return res.status(400).json({ message: 'Invalid Id' })
+    const furniture = await Furniture.findById(id);
+    if (!furniture) { return res.status(404).json({ message: 'Data not found' }) }
+    return res.status(200).json({furniture})
+  } catch (err) {
+    return res.status(500).json({ message: err?.message });
+  }
+
+}
+
+
 // Data insert
 export const createData = async (req, res) => {
   let uploadedImages = [];
@@ -30,7 +113,7 @@ export const createData = async (req, res) => {
 
   } catch (err) {
     await removeImage(uploadedImages);
-    res.status(500).json({ message: err.message || err });
+    res.status(500).json({ message: err?.message });
   }
 }
 
@@ -102,7 +185,7 @@ export const updateData = async (req, res) => {
     if (req.body.stock !== undefined) furniture.stock = req.body.stock;
     if (req.body.tags !== undefined) furniture.tags = req.body.tags;
     if (req.body.isFeatured !== undefined) furniture.isFeatured = req.body.isFeatured;
-     if (req.body.colors !== undefined) furniture.colors = req.body.colors;
+    if (req.body.colors !== undefined) furniture.colors = req.body.colors;
 
     if (req.body.ratings !== undefined) {
       furniture.ratings = {
@@ -120,7 +203,7 @@ export const updateData = async (req, res) => {
   } catch (err) {
     // Rollback newly uploaded images if something goes wrong
     await removeImage(newlyUploaded);
-    res.status(500).json({ message: err.message || err });
+    res.status(500).json({ message: err?.message});
   }
 };
 
@@ -146,6 +229,6 @@ export const removeData = async (req, res) => {
 
     res.status(200).json({ message: "Data deleted successfully" });
   } catch (err) {
-    res.status(500).json({ message: err.message || err });
+    res.status(500).json({ message: err?.message });
   }
 };
