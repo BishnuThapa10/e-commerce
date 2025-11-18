@@ -8,8 +8,8 @@ export const validateBody = (schema) => {
     });
 
     if (error) {
-      const messages = error.details.map(d => `${d.path.join('.')}: ${d.message}`);
-      return res.status(400).json({ errors: messages });
+      const messages = error.details.map(d => d.message).join(',');
+      return res.status(400).json({message: messages});
     }
 
     req.body = value;
