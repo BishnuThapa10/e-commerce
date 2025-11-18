@@ -4,21 +4,37 @@ import * as Yup from "yup";
 import { Input } from '../../components/ui/input.jsx';
 import { Button } from '../../components/ui/button.jsx';
 import { Checkbox } from '../../components/ui/checkbox.jsx';
+import { Loader2 } from 'lucide-react';
+import { useLoginUserMutation } from './accountApi.js';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router';
+import toast from 'react-hot-toast';
+import { setUser } from './userSlice.js';
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
   password: Yup.string().min(6, "Too Short!").required("Required"),
 });
 
-export default function LoginForm({setMode}) {
+export default function LoginForm({ setMode }) {
+  const [loginUser, { isLoading }] = useLoginUserMutation();
+  const dispatch = useDispatch();
+  const nav = useNavigate();
   return (
     <div className="w-full max-w-xs p-4 mx-auto space-y-4">
       <h3 className='text-lg font-semibold'>Login</h3>
       <Formik
         initialValues={{ email: "", password: "" }}
         validationSchema={LoginSchema}
-        onSubmit={(values) => {
-          console.log(values);
+        onSubmit={async (val) => {
+          try {
+            const response = await loginUser(val).unwrap();
+            toast.success('Logged in');
+            dispatch(setUser(response));
+            nav(-1);
+          } catch (err) {
+            toast.error(err.data?.message)
+          }
         }}
       >
         {({ handleSubmit, handleChange, values, errors, touched }) => (
@@ -67,9 +83,12 @@ export default function LoginForm({setMode}) {
               <Button type="submit"
                 variant="outline"
                 className="border-black text-xs px-8"
-              >Login</Button>
+                disabled={isLoading}
+              >
+                {isLoading && <Loader2 className="animate-spin h-4 w-4" />}
+                Login</Button>
               <span onClick={() => setMode("register")}
-              className='text-xs text-gray-600 cursor-pointer'> Don't have an account?</span>
+                className='text-xs text-gray-600 cursor-pointer'> Don't have an account?</span>
             </div>
           </form>
         )}

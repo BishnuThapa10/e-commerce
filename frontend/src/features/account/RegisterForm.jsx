@@ -3,22 +3,32 @@ import React from 'react'
 import * as Yup from "yup";
 import { Input } from '../../components/ui/input.jsx';
 import { Button } from '../../components/ui/button.jsx';
+import { useRegisterUserMutation } from './accountApi.js';
+import toast from 'react-hot-toast';
+import { Loader2 } from 'lucide-react';
 
 const RegisterSchema = Yup.object().shape({
-  username: Yup.string().min(5, "Atleast 5 character long!").required("Required"),
+  name: Yup.string().min(3, "Atleast 3 character long!").required("Required"),
   email: Yup.string().email("Invalid email").required("Required"),
   password: Yup.string().min(8, "Minimunm 8 words!").required("Required"),
 });
 
 export default function RegisterForm({ setMode }) {
+  const [registerUser, { isLoading }] = useRegisterUserMutation();
   return (
     <div className="w-full max-w-xs p-4 mx-auto space-y-4">
       <h3 className='text-lg font-semibold'>Register</h3>
       <Formik
-        initialValues={{ username: "", email: "", password: "" }}
+        initialValues={{ name: "", email: "", password: "" }}
         validationSchema={RegisterSchema}
-        onSubmit={(values) => {
-          console.log(values);
+        onSubmit={async (val) => {
+          try {
+            const response = await registerUser(val).unwrap();
+            toast.success('Register Sucessfully');
+            setMode("login")
+          } catch (err) {
+            toast.error(err.data?.message)
+          }
         }}
       >
         {({ handleSubmit, handleChange, values, errors, touched }) => (
@@ -26,18 +36,18 @@ export default function RegisterForm({ setMode }) {
 
             {/* Username */}
             <div className="space-y-2">
-              <label htmlFor="username" className="block text-sm font-medium">
-                Username
+              <label htmlFor="name" className="block text-sm font-medium">
+                Name
               </label>
               <Input
-                id="username"
-                name="username"
-                value={values.username}
+                id="name"
+                name="name"
+                value={values.name}
                 onChange={handleChange}
-                placeholder="username"
+                placeholder="name"
               />
-              {errors.username && touched.username && (
-                <p className="text-red-500 text-xs">{errors.username}</p>
+              {errors.name && touched.name && (
+                <p className="text-red-500 text-xs">{errors.name}</p>
               )}
             </div>
 
@@ -82,7 +92,10 @@ export default function RegisterForm({ setMode }) {
               <Button type="submit"
                 variant="outline"
                 className="border-black text-xs px-8"
-              >Register</Button>
+                disabled={isLoading}
+              >
+                {isLoading && <Loader2 className="animate-spin h-4 w-4" />}
+                Register</Button>
               <span onClick={() => setMode("login")}
                 className='text-xs text-gray-600 cursor-pointer'> Already have an account?</span>
             </div>
