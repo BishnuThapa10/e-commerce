@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { connectDB } from './config/db.js';
 import furnitureRoute from './routes/furnitureRoutes.js';
+import userRoute from './routes/userRoutes.js';
 
 
 dotenv.config();
@@ -24,6 +25,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(furnitureRoute);
+app.use(userRoute);
 
 
 app.use((req, res, next) => {
