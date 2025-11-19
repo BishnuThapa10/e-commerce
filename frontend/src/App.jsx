@@ -10,6 +10,12 @@ import Checkout from './features/checkout/Checkout.jsx';
 import CartPage from './features/cart/CartPage.jsx';
 import ContactPage from './features/contact/ContactPage.jsx';
 import Blog from './features/blog/Blog.jsx';
+import AuthRedirect from './components/website/AuthRedirect.jsx';
+import ProtectedRoute from './components/website/ProtectedRoute.jsx';
+import AdminRoute from './components/website/AdminRoute.jsx';
+import AdminDashboard from './features/admin/AdminDashboard.jsx';
+import AdminLayout from './features/admin/AdminLayout.jsx';
+import AddItems from './features/admin/AddItems.jsx';
 
 export default function App() {
   const router = createBrowserRouter([
@@ -17,48 +23,61 @@ export default function App() {
       path: '/',
       element: <RootLayout />,
       children: [
+        { index: true, element: <Home /> },
+        { path: 'shop', element: <Shop /> },
+        { path: 'furniture', element: <FurnitureDetail /> },
+        { path: 'contact', element: <ContactPage /> },
+        { path: 'blog', element: <Blog /> },
+
+
+        // Prevent login page after logging in
         {
-          index: true,
-          element: <Home />
+          element: <AuthRedirect />,
+          children: [
+            { path: 'account', element: <Account /> }
+          ]
         },
 
+
+        // Protected user-only routes
         {
-          path: 'shop',
-          element: <Shop />
+          element: <ProtectedRoute />,
+          children: [
+            { path: 'checkout', element: <Checkout /> },
+            { path: 'cart', element: <CartPage /> },
+          ]
         },
 
-        {
-          path: 'furniture',
-          element: <FurnitureDetail />
-        },
+        // Admin-only pages
+        // {
+        //   path: 'admin',
+        //   element: <AdminRoute />,
+        //   children: [
+        //     { path: 'dashboard', element: <AdminDashboard /> },
+        //   ]
+        // },
 
-        {
-          path: 'account',
-          element: <Account />
-        },
-
-        {
-          path: 'checkout',
-          element: <Checkout />
-        },
-
-        {
-          path: 'cart',
-          element: <CartPage />
-        },
-
-        {
-          path: 'contact',
-          element: <ContactPage />
-        },
-
-        {
-          path: 'blog',
-          element: <Blog />
-        },
       ]
 
+    },
+
+    // Admin routes (separate layout)
+    {
+      path: "/admin",
+      element: <AdminRoute />,
+      children: [
+        {
+          element: <AdminLayout />,
+          children: [
+            { index: true, element: <AdminDashboard /> },
+            { path: "dashboard", element: <AdminDashboard /> },
+            { path: "addItems", element: <AddItems /> },
+          ]
+        }
+      ]
     }
+
+
   ]);
   return <RouterProvider router={router} />
 }
