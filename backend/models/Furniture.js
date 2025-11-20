@@ -46,9 +46,10 @@ const furnitureSchema = new mongoose.Schema({
   },
 
   size: {
-    type: String,
+    type: [String],
     enum: sizeEnum,
-    required: true
+    required: true,
+    default: []
   },
 
   roomType: {
