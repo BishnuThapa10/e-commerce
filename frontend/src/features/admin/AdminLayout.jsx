@@ -63,7 +63,7 @@ export default function AdminLayout() {
     <div className=" bg-gray-100">
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col h-screen">
+      <div className="flex flex-col max-h-full">
 
         {/* Top Navbar */}
         <header className="bg-white border-b px-6 h-10 flex items-center justify-between">

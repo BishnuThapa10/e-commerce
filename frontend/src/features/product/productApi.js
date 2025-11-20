@@ -17,8 +17,17 @@ export const productApi = mainApi.injectEndpoints({
 
     }),
 
+    addItem: builder.mutation({
+      query: ({ formData }) => ({
+        url: '/furnitures',
+        body: formData,
+        method: 'POST'
+      }),
+      invalidatesTags: ['Furnitures', 'ID']
+    }),
+
   })
 })
 
 
-export const {useGetAllProductQuery} = productApi;
+export const { useGetAllProductQuery, useAddItemMutation } = productApi;
