@@ -78,7 +78,7 @@ export const getSingleData = async (req, res) => {
     if (!mongoose.isValidObjectId(id)) return res.status(400).json({ message: 'Invalid Id' })
     const furniture = await Furniture.findById(id);
     if (!furniture) { return res.status(404).json({ message: 'Data not found' }) }
-    return res.status(200).json({furniture})
+    return res.status(200).json({ furniture })
   } catch (err) {
     return res.status(500).json({ message: err?.message });
   }
@@ -125,7 +125,7 @@ export const createData = async (req, res) => {
 // Data update
 export const updateData = async (req, res) => {
   const newlyUploaded = [];
-  let oldImages = [];
+  // let oldImages = [];
 
   try {
     const { id } = req.params;
@@ -137,23 +137,41 @@ export const updateData = async (req, res) => {
     const furniture = await Furniture.findById(id);
     if (!furniture) return res.status(404).json({ message: "Data not found" });
 
+    // Parse existingImages sent from frontend
+    const existingImages = req.body.existingImages
+      ? JSON.parse(req.body.existingImages)
+      : [];
 
-    // Replace images if new files uploaded
+    // Prevent images from being empty
+    if (!existingImages.length && (!req.files || req.files.length === 0)) {
+      return res.status(400).json({ message: "At least 1 image is required." });
+    }
+
+    // Identify old images that will be deleted
+    const imagesToDelete = furniture.images.filter(
+      (img) => !existingImages.some((e) => e.public_id === img.public_id)
+    );
+
+
+    // Handle new file uploads
     if (req.files?.length > 0) {
       // Delete old images after successful upload
-      oldImages = [...furniture.images];
+      // oldImages = [...furniture.images];
 
-      furniture.images = []; // reset
+      // furniture.images = []; // reset
 
       for (const file of req.files) {
         const uploaded = await upload("furnitures").uploadToCloudinary(file.buffer, file.originalname);
 
         const imageObj = { url: uploaded.secure_url, public_id: uploaded.public_id };
         newlyUploaded.push(imageObj);
-        furniture.images.push(imageObj);
+        // furniture.images.push(imageObj);
       }
 
     }
+
+    // Merge existing images + newly uploaded images
+    furniture.images = [...existingImages, ...newlyUploaded]
 
     //  const fieldsToUpdate = [
     //   "name",
@@ -197,13 +215,13 @@ export const updateData = async (req, res) => {
     await furniture.save();
 
     // Delete old images after DB update
-    await removeImage(oldImages);
+    await removeImage(imagesToDelete);
 
     res.status(200).json({ message: "Data updated successfully" });
   } catch (err) {
     // Rollback newly uploaded images if something goes wrong
     await removeImage(newlyUploaded);
-    res.status(500).json({ message: err?.message});
+    res.status(500).json({ message: err?.message });
   }
 };
 

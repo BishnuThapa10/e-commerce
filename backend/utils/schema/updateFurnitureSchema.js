@@ -18,7 +18,7 @@ export const furnitureUpdateValidationSchema = Joi.object({
   name: Joi.string().trim(),
   description: Joi.string().min(20),
   category: Joi.string().valid(...categoryEnum),
-  size: Joi.array().items(Joi.string().valid(...sizeEnum)).min(1).required(),
+  size: Joi.array().items(Joi.string().valid(...sizeEnum)).min(1),
   roomType: Joi.string().valid(...roomTypeEnum),
   images: Joi.array().items(imageSchema),
   price: Joi.number(),
@@ -30,4 +30,5 @@ export const furnitureUpdateValidationSchema = Joi.object({
     count: Joi.number(),
   }),
   isFeatured: Joi.boolean(),
+  existingImages: Joi.string(), // JSON.stringified array
 });
