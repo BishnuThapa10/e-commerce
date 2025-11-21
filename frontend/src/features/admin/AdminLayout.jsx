@@ -60,10 +60,10 @@ export default function AdminLayout() {
     }
   }
   return (
-    <div className=" bg-gray-100">
+    <div className=" bg-gray-100 min-h-screen">
 
       {/* Main Content */}
-      <div className="flex flex-col max-h-full">
+      <div className="flex flex-col min-h-screen">
 
         {/* Top Navbar */}
         <header className="bg-white border-b px-6 h-10 flex items-center justify-between">
@@ -93,7 +93,7 @@ export default function AdminLayout() {
         </header>
 
         {/* Dynamic Page Content */}
-        <main className="p-4">
+        <main className="p-4 flex-1">
           <Outlet />
         </main>
       </div>

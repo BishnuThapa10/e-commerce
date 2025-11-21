@@ -32,6 +32,9 @@ export const commonSchema = {
   price: Yup.number().required("Price is required"),
   stock: Yup.number().min(0).required("Stock is required"),
   size: Yup.array().min(1, "At least one size is required").required("Size is required"),
+  colors: Yup.array()
+    .min(1, "At least one color is required")
+    .required("Colors are required"),
   category: Yup.string().required("Category is required"),
   roomType: Yup.string().required("roomType is required"),
   isFeatured: Yup.boolean().default(false),

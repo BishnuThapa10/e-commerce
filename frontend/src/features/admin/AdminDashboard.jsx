@@ -1,15 +1,19 @@
 import React from 'react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components/ui/table.jsx'
-import { AiFillDelete } from 'react-icons/ai'
 import { useGetAllProductQuery } from '../product/productApi.js'
 import { IoAddCircleSharp } from "react-icons/io5";
-import { FaEdit } from "react-icons/fa";
+import { BiSolidEdit } from "react-icons/bi";
 import { Link } from 'react-router';
+import Loader from '../../components/website/Loader.jsx';
+import ErrorMessage from '../../components/website/ErrorMessage.jsx';
+import DeleteItem from './DeleteItem.jsx';
 
 export default function AdminDashboard() {
   const { isLoading, error, data } = useGetAllProductQuery();
-  if (isLoading) return <h1>Loading...</h1>
-  if (error) return <h1 className="text-red-500">{error.data}</h1>
+  if (isLoading) return <Loader text="Please Wait..." />;
+  if (error) return (
+    <ErrorMessage message={error.data?.message} />
+  );
   return (
     <div>
       <Table className="text-sm [&_tr:hover]:bg-transparent">
@@ -50,7 +54,7 @@ export default function AdminDashboard() {
               <TableCell className="text-center">{furniture.stock}</TableCell>
               <TableCell className="text-center">{furniture.category}</TableCell>
               <TableCell>
-                <div className="flex flex-wrap justify-center items-center gap-3">
+                <div className="flex justify-center items-center gap-3">
                   {furniture.colors.map(color => (
                     <div key={color._id} className="flex gap-2">
                       <div
@@ -62,16 +66,23 @@ export default function AdminDashboard() {
                   ))}
                 </div>
               </TableCell>
-              <TableCell className="text-center">{furniture.size}</TableCell>
+              <TableCell className="text-center"><div className="flex justify-center gap-1">
+                {furniture.size?.map((sz) => (
+                  <span
+                    key={sz}
+                    className="px-2 py-1 text-xs rounded-full bg-gray-200 text-gray-700"
+                  >
+                    {sz}
+                  </span>
+                ))}
+              </div></TableCell>
               <TableCell className="text-center">{furniture.isFeatured ? "Yes" : "No"}</TableCell>
               <TableCell className="text-center">
                 <div className='flex gap-2 items-center'>
-                  <Link to="#">
-                    <FaEdit className='text-blue-400 h-6 w-5' />
+                  <Link to={`/admin/update-items/${furniture._id}`}>
+                    <BiSolidEdit className='text-blue-400 h-6 w-5' />
                   </Link>
-                  <Link to="#">
-                    <AiFillDelete className='text-red-400 h-6 w-5' />
-                  </Link>
+                  <DeleteItem id={furniture._id}/>
                 </div>
               </TableCell>
             </TableRow>

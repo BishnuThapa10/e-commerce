@@ -1,70 +1,69 @@
 import React from 'react'
+import { useNavigate, useParams } from 'react-router'
+import { useGetSingleItmeQuery, useUpdateItemMutation } from '../product/productApi.js';
+import Loader from '../../components/website/Loader.jsx';
+import ErrorMessage from '../../components/website/ErrorMessage.jsx';
 import * as Yup from 'yup';
 import { category, commonSchema, roomType, supportedFormats } from './validation.js';
 import { Formik } from 'formik';
+import toast from 'react-hot-toast';
 import { Input } from '../../components/ui/input.jsx';
 import { Textarea } from '../../components/ui/textarea.jsx';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/select.jsx';
-import { Button } from '../../components/ui/button.jsx';
-import { Loader2 } from 'lucide-react';
 import ColorPicker from './ColorPicker.jsx';
 import SizePicker from './SizePicker.jsx';
 import { Checkbox } from '../../components/ui/checkbox.jsx';
-import { useAddItemMutation } from '../product/productApi.js';
-import { useNavigate } from 'react-router';
-import toast from 'react-hot-toast';
+import { Button } from '../../components/ui/button.jsx';
+import { Loader2 } from 'lucide-react';
 import FullScreenLoader from '../../components/website/FullScreenLoader.jsx';
-
 
 const valSchema = Yup.object({
   ...commonSchema,
 
-  images: Yup.mixed()
-    .required("Images are required")
-    .test("minImages", "At least 1 image is required", (value) => {
-      return value && value.length >= 1;
-    })
-    .test("maxImages", "You can upload up to 5 images", (value) => {
-      return value && value.length <= 5;
-    })
-    .test("fileType", "Invalid file type", (value) => {
-      if (!value) return false;
-      return [...value].every((file) => supportedFormats.includes(file.type));
-    })
-    .test("fileSize", "Each file must be under 5MB", (value) => {
-      if (!value) return false;
-      return [...value].every((file) => file.size <= 5 * 1024 * 1024);
-    })
-
+  images: Yup.array()
+    .min(1, "At least one image is required")
+    .max(5, "You can upload up to 5 images")
+    .test("hasImages", "At least one image must exist", (images) => images?.length > 0)
+    .test("fileType", "Invalid file type", (images) =>
+      images?.every((img) => (img instanceof File ? supportedFormats.includes(img.type) : true))
+    )
+    .test("fileSize", "Each file must be under 5MB", (images) =>
+      images?.every((img) => (img instanceof File ? img.size <= 5 * 1024 * 1024 : true))
+    ),
 });
 
-
-export default function AddItems() {
-  const [addItem, { isLoading }] = useAddItemMutation();
+export default function UpdateItems() {
+  const { id } = useParams();
+  const { data, isLoading, error } = useGetSingleItmeQuery(id);
+  const [updateItem, { isLoading: isUpdating }] = useUpdateItemMutation()
   const nav = useNavigate();
 
+  if (isLoading) return <Loader text="Please Wait..." />;
+  if (error) return (
+    <ErrorMessage message={error.data?.message} />
+  );
   return (
     <>
-      <FullScreenLoader show={isLoading} message="Please wait it may time..." />
+      <FullScreenLoader show={isUpdating} message="Please wait it may time..." />
       <div className="w-full max-w-sm bg-white p-4 mx-auto space-y-4">
-        <h3 className='text-lg font-semibold'>Add New Furniture</h3>
+        <h3 className='text-lg font-semibold'>Update Data</h3>
         <Formik
           initialValues={{
-            name: "",
-            description: "",
-            category: "",
-            size: [],
-            roomType: "",
-            images: [],
-            price: "",
-            stock: "",
-            colors: [],
-            isFeatured: false,
+            name: data?.furniture?.name || "",
+            description: data?.furniture?.description || "",
+            category: data?.furniture?.category || "",
+            size: data?.furniture?.size || [],
+            roomType: data?.furniture?.roomType || "",
+            images: data?.furniture?.images || [],
+            price: data?.furniture?.price || "",
+            stock: data?.furniture?.stock || "",
+            colors: data?.furniture?.colors || [],
+            isFeatured: data?.furniture?.isFeatured || false,
           }}
 
           validationSchema={valSchema}
 
-          onSubmit={async (val, { resetForm }) => {
+          onSubmit={async (val) => {
             try {
               const formData = new FormData();
               formData.append("name", val.name);
@@ -75,8 +74,8 @@ export default function AddItems() {
               formData.append("stock", val.stock);
               formData.append("isFeatured", val.isFeatured);
 
-              // / Send arrays correctly
-              val.size.forEach((s) => formData.append("size", s));
+              // Send arrays correctly
+              val.size.forEach((s) => {formData.append("size[]", s)});
 
               // colors array of objects
               val.colors.forEach((color, index) => {
@@ -84,20 +83,22 @@ export default function AddItems() {
                 formData.append(`colors[${index}][hex]`, color.hex);
               });
 
-              // multiple images
-              val.images.forEach((file) => {
-                formData.append("images", file);
-              });
+              // Append new files only
+              val.images
+                .filter((img) => img instanceof File)
+                .forEach((file) => formData.append("images", file));
 
-              const result = await addItem({ formData }).unwrap();
+              // Append existing images so backend knows which ones to keep
+              const existingImages = val.images.filter((img) => !(img instanceof File));
+              formData.append("existingImages", JSON.stringify(existingImages));
+
+              const result = await updateItem({ id, formData }).unwrap();
               if (result.error) {
                 const message = error?.data?.message || error?.error || "Something went wrong";
                 toast.error(message)
               }
-              resetForm();
-              toast.success("Post Created");
+              toast.success("Data Updated");
               nav(-1);
-              // console.log(val);
             } catch (err) {
               const message = err?.data?.message || err?.error || "Something went wrong";
               toast.error(message)
@@ -292,29 +293,35 @@ export default function AddItems() {
               </div>
 
               {/* Preview Grid */}
+              {/* Images Preview */}
               {values.images && values.images.length > 0 && (
                 <div className="grid grid-cols-3 gap-4 mt-3">
-                  {values.images.map((file, index) => (
-                    <div key={index} className="relative group">
-                      <img
-                        src={URL.createObjectURL(file)}
-                        alt="preview"
-                        className="w-full h-24 object-cover rounded-lg border shadow-sm"
-                      />
+                  {values.images.map((img, index) => {
+                    const src = img instanceof File ? URL.createObjectURL(img) : img.url;
+                    return (
+                      <div key={index} className="relative group">
+                        <img
+                          src={src}
+                          alt="preview"
+                          className="w-full h-24 object-cover rounded-lg border shadow-sm"
+                        />
 
-                      {/* Delete Button */}
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const updated = values.images.filter((_, i) => i !== index);
-                          setFieldValue("images", updated);
-                        }}
-                        className="absolute top-1 right-1 bg-black/60 text-white text-xs rounded-full px-1 opacity-0 group-hover:opacity-100 transition"
-                      >
-                        ✕
-                      </button>
-                    </div>
-                  ))}
+                        {/* Delete Button */}
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setFieldValue(
+                              "images",
+                              values.images.filter((_, i) => i !== index)
+                            )
+                          }
+                          className="absolute top-1 right-1 bg-black/60 text-white text-xs rounded-full px-1 opacity-0 group-hover:opacity-100 transition"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    );
+                  })}
                 </div>
               )}
 
@@ -336,9 +343,9 @@ export default function AddItems() {
               <Button type="submit"
                 variant="outline"
                 className="border-black text-xs px-8"
-                disabled={isLoading}
+                disabled={isUpdating}
               >
-                {isLoading && <Loader2 className="animate-spin h-4 w-4" />}
+                {isUpdating && <Loader2 className="animate-spin h-4 w-4" />}
                 Submit</Button>
 
             </form>
