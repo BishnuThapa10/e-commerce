@@ -2,7 +2,7 @@ import React from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs.jsx'
 import sofa from '../../assets/images/sofa.png'
 
-export default function TabSection() {
+export default function TabSection({ furniture }) {
   return (
     <Tabs defaultValue="account" className="px-4 sm:px-15 pb-6 border-b border-b-[#D9D9D9] flex items-center">
       <TabsList className="bg-transparent flex gap-0 md:gap-4">
@@ -31,19 +31,16 @@ export default function TabSection() {
 
       <TabsContent value="account" className="flex flex-col gap-2 items-center">
         <p className='text-xs md:text-sm text-[#9F9F9F] max-w-[800px] text-justify'>
-          Embodying the raw, wayward spirit of rock ‘n’ roll, the Kilburn portable active stereo speaker takes the unmistakable look and sound of Marshall, unplugs the chords, and takes the show on the road.
-        </p>
-        <p className='text-xs md:text-sm text-[#9F9F9F] max-w-[800px] text-justify'>
-          Weighing in under 7 pounds, the Kilburn is a lightweight piece of vintage styled engineering. Setting the bar as one of the loudest speakers in its class, the Kilburn is a compact, stout-hearted hero with a well-balanced audio which boasts a clear midrange and extended highs for a sound that is both articulate and pronounced. The analogue knobs allow you to fine tune the controls to your personal preferences while the guitar-influenced leather strap enables easy and stylish travel.
+          {furniture.description}
         </p>
 
-        <div className="flex gap-4">
-          <div className='h-30 md:h-70 bg-[#FFF9E5]'>
-            <img src={sofa} alt="" className='w-full h-full object-contain' />
-          </div>
-          <div className='h-30 md:h-70 bg-[#FFF9E5]'>
-            <img src={sofa} alt="" className='w-full h-full object-contain' />
-          </div>
+        <div className="grid grid-cols-2 gap-4">
+          {furniture && furniture.images.map((i) => (
+            <div key={i._id} className='h-30 md:h-70 bg-[#FFF9E5]'>
+              <img src={i.url} alt="image" className='w-full h-full object-contain' />
+            </div>
+          ))}
+
         </div>
 
       </TabsContent>

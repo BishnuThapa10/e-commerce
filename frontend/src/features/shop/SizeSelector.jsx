@@ -2,9 +2,9 @@ import React from 'react'
 import { Button } from '../../components/ui/button.jsx';
 
 
-const sizes = ["L", "XL", "XS"];
+// const sizes = ["L", "XL", "XS"];
 
-export default function SizeSelector({ selectedSize, onSelectSize }) {
+export default function SizeSelector({ sizes, selectedSize, onSelectSize }) {
   return (
     <div className="flex gap-1">
       {sizes.map((size) => {

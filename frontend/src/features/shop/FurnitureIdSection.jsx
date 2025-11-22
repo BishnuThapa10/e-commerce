@@ -4,22 +4,23 @@ import { FaLinkedin } from "react-icons/fa";
 import { AiFillTwitterCircle } from "react-icons/ai";
 import { GoHeart } from "react-icons/go";
 
-export default function FurnitureIdSection() {
+export default function FurnitureIdSection({furniture}) {
+  const { _id, category, roomType } = furniture;
   return (
     <div className="flex gap-2 md:gap-20 col-start-1 md:col-start-2 border-t border-t-[#D9D9D9] py-6">
 
       <div className='grid grid-cols-[max-content_max-content_max-content] gap-x-2 gap-y-3'>
         <span className='text-xs text-[#9F9F9F]'>SKU</span>
         <span className='text-xs text-[#9F9F9F]'>:</span>
-        <span className='text-xs text-[#9F9F9F]'>SSOO1</span>
+        <span className='text-xs text-[#9F9F9F]'>{_id}</span>
 
         <span className='text-xs text-[#9F9F9F]'>Category</span>
         <span className='text-xs text-[#9F9F9F]'>:</span>
-        <span className='text-xs text-[#9F9F9F]'>Sofas</span>
+        <span className='text-xs text-[#9F9F9F]'>{category}</span>
 
         <span className='text-xs text-[#9F9F9F]'>Tags</span>
         <span className='text-xs text-[#9F9F9F]'>:</span>
-        <span className='text-xs text-[#9F9F9F]'>Sofa, Chair, Home, Shop</span>
+        <span className='text-xs text-[#9F9F9F]'>{category}, {roomType}</span>
 
         <span className='text-xs text-[#9F9F9F]'>Share</span>
         <span className='text-xs text-[#9F9F9F]'>:</span>

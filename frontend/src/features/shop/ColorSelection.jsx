@@ -1,13 +1,13 @@
 import React from 'react'
 import { Button } from '../../components/ui/button.jsx';
 
-const colors = [
-  { name: "Blue", hex: "#816DFA" },
-  { name: "Black", hex: "#000000" },
-  { name: "Yellow", hex: "#CDBA7B" }
-];
+// const colors = [
+//   { name: "Blue", hex: "#816DFA" },
+//   { name: "Black", hex: "#000000" },
+//   { name: "Yellow", hex: "#CDBA7B" }
+// ];
 
-export default function ColorSelection({ selectedColor, onSelectColor }) {
+export default function ColorSelection({ colors, selectedColor, onSelectColor }) {
   return (
     <div className="flex gap-2">
       {colors.map((color) => {

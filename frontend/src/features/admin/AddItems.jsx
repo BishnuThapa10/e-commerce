@@ -24,8 +24,8 @@ const valSchema = Yup.object({
     .test("minImages", "At least 1 image is required", (value) => {
       return value && value.length >= 1;
     })
-    .test("maxImages", "You can upload up to 5 images", (value) => {
-      return value && value.length <= 5;
+    .test("maxImages", "You can upload up to 4 images", (value) => {
+      return value && value.length <= 4;
     })
     .test("fileType", "Invalid file type", (value) => {
       if (!value) return false;

@@ -26,7 +26,7 @@ export default function App() {
       children: [
         { index: true, element: <Home /> },
         { path: 'shop', element: <Shop /> },
-        { path: 'furniture', element: <FurnitureDetail /> },
+        { path: 'furniture/:id', element: <FurnitureDetail /> },
         { path: 'contact', element: <ContactPage /> },
         { path: 'blog', element: <Blog /> },
 
@@ -48,15 +48,6 @@ export default function App() {
             { path: 'cart', element: <CartPage /> },
           ]
         },
-
-        // Admin-only pages
-        // {
-        //   path: 'admin',
-        //   element: <AdminRoute />,
-        //   children: [
-        //     { path: 'dashboard', element: <AdminDashboard /> },
-        //   ]
-        // },
 
       ]
 

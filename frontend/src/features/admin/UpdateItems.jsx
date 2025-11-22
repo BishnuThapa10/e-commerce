@@ -22,7 +22,7 @@ const valSchema = Yup.object({
 
   images: Yup.array()
     .min(1, "At least one image is required")
-    .max(5, "You can upload up to 5 images")
+    .max(4, "You can upload up to 4 images")
     .test("hasImages", "At least one image must exist", (images) => images?.length > 0)
     .test("fileType", "Invalid file type", (images) =>
       images?.every((img) => (img instanceof File ? supportedFormats.includes(img.type) : true))
