@@ -7,6 +7,8 @@ import { Input } from '../../components/ui/input.jsx';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/select.jsx';
 import { Button } from '../../components/ui/button.jsx';
 import { RadioGroup, RadioGroupItem } from '../../components/ui/radio-group.jsx';
+import { useSelector } from 'react-redux';
+import { formatPrice } from '../../lib/priceFormat.js';
 
 const CheckoutSchema = Yup.object().shape({
   firstname: Yup.string().min(3, "Atleast 3 character long!").max(10).required("Required"),
@@ -23,6 +25,7 @@ const CheckoutSchema = Yup.object().shape({
 });
 
 export default function Checkout() {
+  const { cart } = useSelector((state) => state.cartSlice);
   return (
     <div>
       <OtherPageHeroSection text="Checkout" />
@@ -259,16 +262,28 @@ export default function Checkout() {
                 <p className='justify-self-start text-md font-semibold'>Product</p>
                 <p className='justify-self-end text-md font-semibold'>Subtotal</p>
 
-                <p className='justify-self-start text-sm'><span className='text-[#9F9F9F]'>Asgard sofa</span> x 1</p>
-                <p className='justify-self-end text-sm'>Rs.250000.00</p>
+                {cart.length >= 1 && cart.map((item) => (
+                  <>
+                    <p className='justify-self-start text-sm'><span className='text-[#9F9F9F]'>{item.name}</span> x {item.quantity}</p>
+                    <p className='justify-self-end text-sm'>{formatPrice(Number(item.price) * Number(item.quantity))}</p>
+                  </>
+                ))}
 
                 <p className='justify-self-start text-sm'>Subtotal</p>
-                <p className='justify-self-end text-sm'>Rs.250000.00</p>
+                <p className='justify-self-end text-sm'>
+                  {formatPrice((cart || []).reduce(
+                    (sum, i) => sum + Number(i.price) * Number(i.quantity), 0
+                  ))}
+                </p>
 
                 <p className='justify-self-start text-sm'>Total</p>
-                <p className='justify-self-end text-md font-semibold text-[#B88E2F]'>Rs.250000.00</p>
+                <p className='justify-self-end text-md font-semibold text-[#B88E2F]'>
+                  {formatPrice((cart || []).reduce(
+                    (sum, i) => sum + Number(i.price) * Number(i.quantity), 0
+                  ))}
+                </p>
               </div>
-              
+
               <p className='text-xs text-justify'>Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.</p>
 
               <RadioGroup defaultValue="bank">
@@ -288,6 +303,7 @@ export default function Checkout() {
                 <Button type="submit"
                   variant="outline"
                   className="border-black text-sm px-14"
+                  disabled = {cart?.length < 1}
                 >Place order</Button>
               </div>
 

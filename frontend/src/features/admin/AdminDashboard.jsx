@@ -38,7 +38,7 @@ export default function AdminDashboard() {
             <TableRow key={furniture._id}>
               <TableCell className='flex gap-4 items-center'>
                 {furniture.images && furniture.images.length > 0 ? (
-                  <div className='max-w-20 max-h-20 min-w-10 min-h-10 flex items-center justify-center bg-indigo-100'>
+                  <div className='max-w-20 max-h-20 min-w-10 min-h-10 flex items-center justify-center bg-indigo-100 overflow-hidden'>
                     <img
                       src={furniture.images[0].url}
                       alt={furniture.name}

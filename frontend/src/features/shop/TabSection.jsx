@@ -30,7 +30,7 @@ export default function TabSection({ furniture }) {
       </TabsList>
 
       <TabsContent value="account" className="flex flex-col gap-2 items-center">
-        <p className='text-xs md:text-sm text-[#9F9F9F] max-w-[800px] text-justify'>
+        <p className='text-xs md:text-sm text-[#9F9F9F] max-w-[800px] text-justify whitespace-pre-line'>
           {furniture.description}
         </p>
 

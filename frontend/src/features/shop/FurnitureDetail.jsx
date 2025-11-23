@@ -75,7 +75,7 @@ export default function FurnitureDetail() {
 
           </div>
 
-          <p className='text-xs max-w-100'>{data.furniture.description}
+          <p className='text-xs max-w-100 line-clamp-3'>{data.furniture.description}
           </p>
 
           <div className='flex flex-col gap-2'>
@@ -89,7 +89,7 @@ export default function FurnitureDetail() {
           </div>
 
           <div>
-            <AddToCart />
+            <AddToCart furniture={data.furniture} color={selectedColor} size={selectedSize}/>
           </div>
 
         </div>

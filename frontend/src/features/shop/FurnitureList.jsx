@@ -84,8 +84,8 @@ export default function FurnitureList() {
                   <SelectItem value="none">Default</SelectItem>
                   <SelectItem value="price">Price ↑</SelectItem>
                   <SelectItem value="-price">Price ↓</SelectItem>
-                  <SelectItem value="title">Title A → Z</SelectItem>
-                  <SelectItem value="-title">Title Z → A</SelectItem>
+                  <SelectItem value="name">Name A → Z</SelectItem>
+                  <SelectItem value="-name">Name Z → A</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>

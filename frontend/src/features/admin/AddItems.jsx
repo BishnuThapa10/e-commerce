@@ -76,7 +76,7 @@ export default function AddItems() {
               formData.append("isFeatured", val.isFeatured);
 
               // / Send arrays correctly
-              val.size.forEach((s) => formData.append("size", s));
+              val.size.forEach((s) => formData.append("size[]", s));
 
               // colors array of objects
               val.colors.forEach((color, index) => {
