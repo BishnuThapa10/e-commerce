@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import { connectDB } from './config/db.js';
 import furnitureRoute from './routes/furnitureRoutes.js';
 import userRoute from './routes/userRoutes.js';
+import orderRoute from './routes/orderRoute.js';
 
 
 dotenv.config();
@@ -32,6 +33,7 @@ app.use(cors({
 
 app.use(furnitureRoute);
 app.use(userRoute);
+app.use(orderRoute);
 
 
 app.use((req, res, next) => {
