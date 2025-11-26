@@ -20,7 +20,7 @@ export default function Footer() {
             <div className='flex flex-col gap-4 items-start'>
               <h3 className='text-sm text-gray-500'>Links</h3>
               <ul className="flex flex-col gap-2">
-                <li><Link to="/home" className="hover:underline text-xs font-semibold">Home</Link></li>
+                <li><Link to="/" className="hover:underline text-xs font-semibold">Home</Link></li>
                 <li><Link to="/shop" className="hover:underline text-xs font-semibold">Shop</Link></li>
                 <li><Link to="/about" className="hover:underline text-xs font-semibold">About</Link></li>
                 <li><Link to="/contact" className="hover:underline text-xs font-semibold">Contact</Link></li>

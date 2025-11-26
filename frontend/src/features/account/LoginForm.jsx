@@ -32,7 +32,7 @@ export default function LoginForm({ setMode }) {
             toast.success('Logged in');
             const {token} = response;
             dispatch(setUser({token}));
-            nav(-1);
+            nav('/');
           } catch (err) {
             toast.error(err.data?.message)
           }

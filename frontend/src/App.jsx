@@ -17,6 +17,7 @@ import AdminDashboard from './features/admin/AdminDashboard.jsx';
 import AdminLayout from './features/admin/AdminLayout.jsx';
 import AddItems from './features/admin/AddItems.jsx';
 import UpdateItems from './features/admin/UpdateItems.jsx';
+import OrderUi from './features/admin/OrderUi.jsx';
 
 export default function App() {
   const router = createBrowserRouter([
@@ -65,6 +66,7 @@ export default function App() {
             { path: "dashboard", element: <AdminDashboard /> },
             { path: "addItems", element: <AddItems /> },
             { path: "update-items/:id", element: <UpdateItems /> },
+            { path: "orders", element: <OrderUi /> },
           ]
         }
       ]

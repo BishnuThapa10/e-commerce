@@ -15,18 +15,19 @@ export default function AdminDashboard() {
     <ErrorMessage message={error.data?.message} />
   );
   return (
-    <div>
+    <div className="max-h-[90vh] overflow-y-auto rounded-md border relative">
       <Table className="text-sm [&_tr:hover]:bg-transparent">
-        <TableHeader className="bg-indigo-100">
+        <TableHeader>
           <TableRow>
-            <TableHead className="font-semibold text-center">Product</TableHead>
-            <TableHead className="font-semibold text-center">Price</TableHead>
-            <TableHead className="font-semibold text-center">Quantity</TableHead>
-            <TableHead className="font-semibold text-center">Category</TableHead>
-            <TableHead className="font-semibold text-center">Colors</TableHead>
-            <TableHead className="font-semibold text-center">Size</TableHead>
-            <TableHead className="font-semibold text-center">Featured</TableHead>
-            <TableHead className="font-semibold text-center">
+            <TableHead className="font-semibold text-center sticky top-0 bg-indigo-100 z-10">S.N</TableHead>
+            <TableHead className="font-semibold text-center sticky top-0 bg-indigo-100 z-10">Product</TableHead>
+            <TableHead className="font-semibold text-center sticky top-0 bg-indigo-100 z-10">Price</TableHead>
+            <TableHead className="font-semibold text-center sticky top-0 bg-indigo-100 z-10">Quantity</TableHead>
+            <TableHead className="font-semibold text-center sticky top-0 bg-indigo-100 z-10">Category</TableHead>
+            <TableHead className="font-semibold text-center sticky top-0 bg-indigo-100 z-10">Colors</TableHead>
+            <TableHead className="font-semibold text-center sticky top-0 bg-indigo-100 z-10">Size</TableHead>
+            <TableHead className="font-semibold text-center sticky top-0 bg-indigo-100 z-10">Featured</TableHead>
+            <TableHead className="font-semibold text-center sticky top-0 bg-indigo-100 z-10">
               <Link to="/admin/addItems">
                 <IoAddCircleSharp className='text-green-400 h-6 w-5' />
               </Link>
@@ -34,11 +35,12 @@ export default function AdminDashboard() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data && data.furniture.map((furniture) => (
+          {data && data.furniture.map((furniture, i) => (
             <TableRow key={furniture._id}>
+              <TableCell className="text-center">{i + 1}</TableCell>
               <TableCell className='flex gap-4 items-center'>
                 {furniture.images && furniture.images.length > 0 ? (
-                  <div className='max-w-20 max-h-20 min-w-10 min-h-10 flex items-center justify-center bg-indigo-100 overflow-hidden'>
+                  <div className='w-16 h-16  flex items-center justify-center bg-indigo-100 overflow-hidden'>
                     <img
                       src={furniture.images[0].url}
                       alt={furniture.name}
@@ -82,7 +84,7 @@ export default function AdminDashboard() {
                   <Link to={`/admin/update-items/${furniture._id}`}>
                     <BiSolidEdit className='text-blue-400 h-6 w-5' />
                   </Link>
-                  <DeleteItem id={furniture._id}/>
+                  <DeleteItem id={furniture._id} />
                 </div>
               </TableCell>
             </TableRow>

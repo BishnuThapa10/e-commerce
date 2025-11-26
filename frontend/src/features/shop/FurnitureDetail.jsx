@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import asgardSofa from '../../assets/images/asgaardSofa.png'
+import React, { useEffect, useState } from 'react'
 import { Rating, RoundedStar } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
 import { RxDividerVertical } from "react-icons/rx";
@@ -25,16 +24,19 @@ export default function FurnitureDetail() {
   const ratingWidth = starSize * value;
   const [selectedSize, setSelectedSize] = useState("L");
   const [selectedColor, setSelectedColor] = useState("Blue");
-  // console.log("Adding to cart:", {
-  //     size: selectedSize,
-  //     color: selectedColor
-  //   });
+
+  useEffect(() => {
+    if (data) {
+      setSelectedSize(data.furniture.size[0] || "L"); // fallback to "L" if size missing
+      setSelectedColor(data.furniture.colors[0].name || "Blue"); // fallback to "Blue" if color missing
+    }
+  }, [data]);
 
   if (isLoading) return <Loader text="Please Wait..." />;
   if (error) return (
     <ErrorMessage message={error.data?.message} />
   );
-  console.log(data);
+  // console.log(data);
   return (
     <div className='space-y-6'>
       <div className='grid grid-cols-1 md:grid-cols-2 px-4 sm:px-15 py-2 gap-y-4 md:gap-y-10 gap-x-20 overflow-hidden border-b border-b-[#D9D9D9]'>
@@ -89,14 +91,14 @@ export default function FurnitureDetail() {
           </div>
 
           <div>
-            <AddToCart furniture={data.furniture} color={selectedColor} size={selectedSize}/>
+            <AddToCart furniture={data.furniture} color={selectedColor} size={selectedSize} />
           </div>
 
         </div>
-        <FurnitureIdSection furniture={data.furniture}/>
+        <FurnitureIdSection furniture={data.furniture} />
       </div>
 
-      <TabSection furniture={data.furniture}/>
+      <TabSection furniture={data.furniture} />
 
       <div className='flex flex-col items-center justify-center gap-2'>
         <h1 className='text-md sm:text-lg md:text-xl lg:text-2xl font-semibold'>Related Products</h1>
