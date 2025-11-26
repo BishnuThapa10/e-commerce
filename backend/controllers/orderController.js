@@ -23,6 +23,8 @@ export const createOrder = async (req, res) => {
           throw new Error(`Insufficient stock for ${furniture.name}`);
         }
 
+        // console.log(furniture.images[0].url);
+
         const snapshot = await uploadSnapshot(furniture.images[0].url, furniture._id);
 
         return {
@@ -30,6 +32,8 @@ export const createOrder = async (req, res) => {
           name: furniture.name,
           price: furniture.price,
           quantity: item.quantity,
+          color: item.color,
+          size:item.size,
           image: {
             url: snapshot.url,
             public_id: snapshot.public_id

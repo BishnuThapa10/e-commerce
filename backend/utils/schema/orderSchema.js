@@ -1,9 +1,9 @@
 import Joi from "joi";
 import { countriesEnum, provincesEnum } from "../../models/Order.js";
+import { colorsEnum, sizeEnum } from "../../models/Furniture.js";
 
 
-const cloudinaryUrlRegex =
-  /^https:\/\/res\.cloudinary\.com\/[a-zA-Z0-9_-]+\/image\/upload\/[a-zA-Z0-9_\/,-]*v\d+\/[a-zA-Z0-9_\-/]+\.[a-zA-Z0-9]+$/;
+const cloudinaryUrlRegex = /^https:\/\/res\.cloudinary\.com\/[a-zA-Z0-9_-]+\/image\/upload(?:\/v\d+)?\/[a-zA-Z0-9_\-./]+?\.[a-zA-Z0-9]+$/;
 
 export const orderValidationSchema = Joi.object({
   orderItems: Joi.array()
@@ -13,6 +13,8 @@ export const orderValidationSchema = Joi.object({
         name: Joi.string().required(),
         price: Joi.number().required(),
         quantity: Joi.number().min(1).required(),
+        color: Joi.string().valid(...colorsEnum.map(c => c.name)).required(),
+        size: Joi.string().valid(...sizeEnum).required(),
 
         image: Joi.string()
           .pattern(cloudinaryUrlRegex)

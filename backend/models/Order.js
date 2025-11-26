@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { colorsEnum, sizeEnum } from "./Furniture.js";
 
 
 export const countriesEnum = ["Sri Lanka", "Nepal", "India"];
@@ -24,7 +25,9 @@ const orderSchema = new mongoose.Schema(
         name: { type: String, required: true },
         price: { type: Number, required: true },
         quantity: { type: Number, min: 1, required: true },
-        snapshotImage: {
+        color: { type: String, enum: colorsEnum.map(c => c.name), required: true },
+        size: { type: String, enum: sizeEnum, required: true },
+        image: {
           url: { type: String, required: true },
           public_id: { type: String, required: true }
         },
