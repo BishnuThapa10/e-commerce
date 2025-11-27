@@ -94,7 +94,7 @@ export default function UpdateItems() {
 
               const result = await updateItem({ id, formData }).unwrap();
               if (result.error) {
-                const message = error?.data?.message || error?.error || "Something went wrong";
+                const message = result.error?.data?.message || result.error?.error || "Something went wrong";
                 toast.error(message)
               }
               toast.success("Data Updated");

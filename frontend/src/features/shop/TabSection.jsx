@@ -1,6 +1,6 @@
 import React from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs.jsx'
-import sofa from '../../assets/images/sofa.png'
+import Review from './Review.jsx'
 
 export default function TabSection({ furniture }) {
   return (
@@ -46,7 +46,7 @@ export default function TabSection({ furniture }) {
       </TabsContent>
 
       <TabsContent value="password">This is Additional Information.</TabsContent>
-      <TabsContent value="review">This is reviews.</TabsContent>
+      <TabsContent value="review"><Review id = {furniture._id}/></TabsContent>
     </Tabs>
   )
 }

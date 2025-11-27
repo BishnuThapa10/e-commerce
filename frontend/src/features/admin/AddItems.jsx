@@ -91,7 +91,7 @@ export default function AddItems() {
 
               const result = await addItem({ formData }).unwrap();
               if (result.error) {
-                const message = error?.data?.message || error?.error || "Something went wrong";
+                const message = result.error?.data?.message || result.error?.error || "Something went wrong";
                 toast.error(message)
               }
               resetForm();
