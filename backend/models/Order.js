@@ -61,5 +61,7 @@ const orderSchema = new mongoose.Schema(
     }
   }, { timestamps: true })
 
+orderSchema.index({ user: 1, "orderItems.furniture": 1 });
+
 const Order = mongoose.model('Order', orderSchema);
 export default Order;

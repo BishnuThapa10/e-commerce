@@ -103,7 +103,7 @@ const furnitureSchema = new mongoose.Schema({
   },
 }, { timestamps: true });
 
-// ✅ Pre-save hook to automatically attach hex from color name
+// Pre-save hook to automatically attach hex from color name
 furnitureSchema.pre("save", function (next) {
   const colorMap = new Map(colorsEnum.map(c => [c.name, c.hex]));
 
