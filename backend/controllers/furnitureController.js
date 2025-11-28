@@ -9,10 +9,22 @@ import { removeImage } from "../utils/removeImage.js";
 export const getMultipleData = async (req, res) => {
   try {
     const queryObject = { ...req.query };
-    const excludedFields = ['sort', 'fields', 'search', 'page', 'limit', 'skip'];
+    const excludedFields = ['sort', 'fields', 'search', 'page', 'limit', 'skip', 'relatedTo'];
     excludedFields.forEach((field) => {
       delete queryObject[field]
     })
+
+    // RELATED ITEMS FILTER
+    if (req.query.relatedTo) {
+      const currentItem = await Furniture.findById(req.query.relatedTo);
+      if (currentItem) {
+        queryObject._id = { $ne: currentItem._id }; // exclude current item
+        queryObject.$or = [
+          { category: currentItem.category },
+          { roomType: currentItem.roomType }
+        ];
+      }
+    }
 
     // Search Handling
     if (req.query.search) {

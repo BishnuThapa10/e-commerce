@@ -3,7 +3,7 @@ import { countriesEnum, provincesEnum } from "../../models/Order.js";
 import { colorsEnum, sizeEnum } from "../../models/Furniture.js";
 
 
-const cloudinaryUrlRegex = /^https:\/\/res\.cloudinary\.com\/[a-zA-Z0-9_-]+\/image\/upload(?:\/v\d+)?\/[a-zA-Z0-9_\-./]+?\.[a-zA-Z0-9]+$/;
+const cloudinaryUrlRegex = /^https:\/\/res\.cloudinary\.com\/[a-zA-Z0-9_-]+\/image\/upload(?:\/v\d+)?\/.+\.(jpg|jpeg|png|gif|webp)$/i;
 
 export const orderValidationSchema = Joi.object({
   orderItems: Joi.array()
@@ -19,7 +19,11 @@ export const orderValidationSchema = Joi.object({
         image: Joi.string()
           .pattern(cloudinaryUrlRegex)
           .required()
-          .messages({ "string.pattern.base": "Image must be a valid Cloudinary URL." })
+          .messages({
+            "string.empty": "Image URL is required.",
+            "string.uri": "Image must be a valid URL.",
+            "string.pattern.base": "Image must be a valid Cloudinary URL with a supported image format (jpg, jpeg, png, gif, webp)."
+          })
       })
     )
     .min(1)

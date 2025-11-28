@@ -63,7 +63,10 @@ export const submitReview = async (req, res) => {
 
 export const getAllReviews = async (req, res) => {
   try {
-    const reviews = await Review.find({}).populate("user", "name email").select('-status').sort({ createdAt: -1 });
+    const { furniture } = req.query;
+    if (!mongoose.isValidObjectId(furniture)) return res.status(400).json({ message: 'Invalid Id' })
+    const reviews = await Review.find({furniture: mongoose.Types.ObjectId.createFromHexString(furniture)})
+      .populate("user", "name email").select('-status').sort({ createdAt: -1 });
     return res.status(200).json(reviews);
   } catch (err) {
     res.status(500).json({ message: err?.message });

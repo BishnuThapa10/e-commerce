@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Furniture from "../models/Furniture.js";
 import Order from "../models/Order.js";
 import { uploadSnapshot } from "../utils/schema/uploadOrderSnapshot.js";
@@ -33,7 +34,7 @@ export const createOrder = async (req, res) => {
           price: furniture.price,
           quantity: item.quantity,
           color: item.color,
-          size:item.size,
+          size: item.size,
           image: {
             url: snapshot.url,
             public_id: snapshot.public_id
@@ -86,9 +87,29 @@ export const createOrder = async (req, res) => {
 
 export const getAllOrders = async (req, res) => {
   try {
-    const orders = await Order.find({}).populate("user", "name email").sort({ createdAt: -1});
+    const orders = await Order.find({}).populate("user", "name email").sort({ createdAt: -1 });
     return res.status(200).json(orders);
   } catch (err) {
-     res.status(500).json({ message: err?.message });
+    res.status(500).json({ message: err?.message });
   }
 }
+
+export const getDistinctUsersByFurniture = async (req, res) => {
+  try {
+    const { furniture } = req.query;
+
+    // if (!furniture) {
+    //   return res.status(400).json({ message: "furniture id is required" });
+    // }
+    if (!mongoose.isValidObjectId(furniture)) return res.status(400).json({ message: 'Invalid Id' })
+
+    const users = await Order.distinct("user", {
+      "orderItems.furniture": mongoose.Types.ObjectId.createFromHexString(furniture),
+    });
+
+    res.json(users); // only unique userIds
+  } catch (err) {
+    res.status(500).json({ message: err?.message });
+  }
+
+};
