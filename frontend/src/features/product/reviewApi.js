@@ -11,12 +11,13 @@ export const reviewApi  = mainApi.injectEndpoints({
         body: data,
         method: 'POST'
       }),
-      invalidatesTags: ['Reviews', 'ID']
+      invalidatesTags: ['Reviews', 'ID', 'Furnitures']
     }),
 
     getAllReview: builder.query({
-      query: () => ({
+      query: ({furniture}) => ({
         url: '/reviews',
+        params: {furniture},
         method: 'GET'
       }),
       providesTags: ['Reviews', 'ID']

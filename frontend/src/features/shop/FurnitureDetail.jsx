@@ -7,21 +7,21 @@ import ColorSelection from './ColorSelection.jsx';
 import AddToCart from '../cart/AddToCart.jsx';
 import FurnitureIdSection from './FurnitureIdSection.jsx';
 import TabSection from './TabSection.jsx';
-import FourItemList from '../../components/website/FourItemList.jsx';
 import { useGetSingleItmeQuery } from '../product/productApi.js';
 import { useParams } from 'react-router';
 import Loader from '../../components/website/Loader.jsx';
 import ErrorMessage from '../../components/website/ErrorMessage.jsx';
 import { formatPrice } from '../../lib/priceFormat.js';
+import RelatedProducts from './RelatedProducts.jsx';
 
 
 export default function FurnitureDetail() {
   const { id } = useParams();
   const { data, error, isLoading } = useGetSingleItmeQuery(id);
-  const value = 3.5;
+  // const value = 3.5;
   const starSize = 24;
   const maxStars = 5;
-  const ratingWidth = starSize * value;
+  // const ratingWidth = starSize * value;
   const [selectedSize, setSelectedSize] = useState("L");
   const [selectedColor, setSelectedColor] = useState("Blue");
 
@@ -56,11 +56,11 @@ export default function FurnitureDetail() {
 
           <div className=' inline-flex gap-2 items-center'>
 
-            <div style={{ width: ratingWidth }} className='overflow-hidden shrink-0'>
+            <div style={{ width: starSize * data.furniture.ratings.average }} className='overflow-hidden shrink-0'>
               <Rating
                 style={{ width: starSize * maxStars }}
                 readOnly
-                value={value}
+                value={data.furniture.ratings.average}
                 precision={0.5}
                 itemStyles={{
                   itemShapes: RoundedStar,
@@ -72,7 +72,7 @@ export default function FurnitureDetail() {
 
             <div className='flex items-center justify-between sm:gap-2 gap-1'>
               <RxDividerVertical className='h-7 w-7 text-[#9F9F9F]' />
-              <span className='text-xs text-[#9F9F9F]'>5 Customer Review</span>
+              <span className='text-xs text-[#9F9F9F]'>{data.furniture.ratings.count} Customer Review</span>
             </div>
 
           </div>
@@ -100,10 +100,7 @@ export default function FurnitureDetail() {
 
       <TabSection furniture={data.furniture} />
 
-      <div className='flex flex-col items-center justify-center gap-2'>
-        <h1 className='text-md sm:text-lg md:text-xl lg:text-2xl font-semibold'>Related Products</h1>
-      </div>
-      <FourItemList />
+      <RelatedProducts relatedTo = {data.furniture._id}/>
 
     </div>
   )

@@ -26,7 +26,7 @@ export default function TabSection({ furniture }) {
         data-[state=active]:bg-transparent
         data-[state=active]:shadow-none
         data-[state=active]:border-none
-        data-[state=active]:ring-0">Reviews[5]</TabsTrigger>
+        data-[state=active]:ring-0">Reviews[{furniture.ratings.count}]</TabsTrigger>
       </TabsList>
 
       <TabsContent value="account" className="flex flex-col gap-2 items-center">

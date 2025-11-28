@@ -8,9 +8,9 @@ export const productApi = mainApi.injectEndpoints({
   endpoints: (builder) => ({
 
     getAllProduct: builder.query({
-      query: ({ search = '', page = 1, limit = '', sort = '', fields = '' } = {}) => ({
+      query: ({ search = '', page = 1, limit = '', sort = '', fields = '', relatedTo = '' } = {}) => ({
         url: '/furnitures',
-        params: { search, page, sort, limit, fields },
+        params: { search, page, sort, limit, fields, relatedTo },
         method: 'GET'
       }),
 

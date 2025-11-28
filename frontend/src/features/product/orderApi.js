@@ -6,7 +6,7 @@ export const orderApi = mainApi.injectEndpoints({
   endpoints: (builder) => ({
 
     createOrder: builder.mutation({
-      query: ({data}) => ({
+      query: ({ data }) => ({
         url: '/orders',
         body: data,
         method: 'POST'
@@ -15,8 +15,17 @@ export const orderApi = mainApi.injectEndpoints({
     }),
 
     getAllOrder: builder.query({
-      query : () => ({
+      query: () => ({
         url: '/orders',
+        method: 'GET'
+      }),
+      providesTags: ['Orders']
+    }),
+
+    getDistinctUsersByFurniture: builder.query({
+      query: ({furniture}) => ({
+        url: '/orders/users',
+        params: {furniture},
         method: 'GET'
       }),
       providesTags: ['Orders']
@@ -25,4 +34,4 @@ export const orderApi = mainApi.injectEndpoints({
   })
 })
 
-export const {useCreateOrderMutation, useGetAllOrderQuery} = orderApi;
+export const { useCreateOrderMutation, useGetAllOrderQuery, useGetDistinctUsersByFurnitureQuery } = orderApi;
