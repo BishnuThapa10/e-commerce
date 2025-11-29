@@ -4,9 +4,11 @@ import { formatPrice } from '../../lib/priceFormat.js';
 import Loader from '../../components/website/Loader.jsx';
 import ErrorMessage from '../../components/website/ErrorMessage.jsx';
 import { useGetAllProductQuery } from '../product/productApi.js';
+import { useNavigate } from 'react-router';
 
 export default function RelatedProducts({ relatedTo }) {
   const { isLoading, error, data } = useGetAllProductQuery({ relatedTo, limit: 4 });
+  const nav = useNavigate();
   if (isLoading) return <Loader text="Please Wait..." />;
   if (error) return (
     <ErrorMessage message={error.data?.message} />
@@ -32,9 +34,7 @@ export default function RelatedProducts({ relatedTo }) {
       </div>
       <Button
         variant="ghost"
-        // onClick={() =>
-        //   nav(`/search?relatedTo=${relatedTo}`)
-        // }
+        onClick={() => nav(`/search?relatedTo=${relatedTo}`)}
         className="hover:bg-transparent focus:bg-transparent border-b-2 font-semibold border-black cursor-pointer rounded-none inline-flex px-0">
         View More
       </Button>

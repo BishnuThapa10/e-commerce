@@ -18,6 +18,7 @@ import AdminLayout from './features/admin/AdminLayout.jsx';
 import AddItems from './features/admin/AddItems.jsx';
 import UpdateItems from './features/admin/UpdateItems.jsx';
 import OrderUi from './features/admin/OrderUi.jsx';
+import Search from './features/search/Search.jsx';
 
 export default function App() {
   const router = createBrowserRouter([
@@ -30,6 +31,7 @@ export default function App() {
         { path: 'furniture/:id', element: <FurnitureDetail /> },
         { path: 'contact', element: <ContactPage /> },
         { path: 'blog', element: <Blog /> },
+        { path: 'search', element: <Search /> },
 
 
         // Prevent login page after logging in

@@ -84,14 +84,14 @@ export default function Header() {
 
           <div className='flex items-center justify-center gap-3'>
             {/* Profile/Dropdown Menu */}
-           
-              <button
-                onClick={handleUser}
-                className="w-9 h-9 py-2 px-1 flex items-center justify-center cursor-pointer transition disabled:opacity-50 hover:bg-transparent"
-              >
-                {!auth? <TbUserExclamation className="w-full h-full" /> : <TbUserCheck className="w-full h-full" />}
-                
-              </button>
+
+            <button
+              onClick={handleUser}
+              className="w-9 h-9 py-2 px-1 flex items-center justify-center cursor-pointer transition disabled:opacity-50 hover:bg-transparent"
+            >
+              {!auth ? <TbUserExclamation className="w-full h-full" /> : <TbUserCheck className="w-full h-full" />}
+
+            </button>
 
 
             {/* <DropdownMenu>
@@ -112,7 +112,7 @@ export default function Header() {
             </DropdownMenu> */}
 
             <button
-              // onClick={handelLike}
+              onClick={() => nav(`/search`)}
               className="w-9 h-9 py-2 px-1 flex items-center justify-center cursor-pointer transition disabled:opacity-50 hover:bg-transparent"
             >
               <RiSearchLine className="w-full h-full" />

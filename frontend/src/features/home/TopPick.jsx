@@ -4,9 +4,11 @@ import ErrorMessage from '../../components/website/ErrorMessage.jsx';
 import { Button } from '../../components/ui/button.jsx';
 import { useGetAllProductQuery } from '../product/productApi.js';
 import { formatPrice } from '../../lib/priceFormat.js';
+import { useNavigate } from 'react-router';
 
 export default function TopPick() {
   const { isLoading, error, data } = useGetAllProductQuery({ sort: '-ratings.average', limit: 4 });
+  const nav = useNavigate();
   if (isLoading) return <Loader text="Please Wait..." />;
   if (error) return (
     <ErrorMessage message={error.data?.message} />
@@ -35,9 +37,9 @@ export default function TopPick() {
       </div>
       <Button
         variant="ghost"
-        // onClick={() =>
-        //   nav(`/search?relatedTo=${relatedTo}`)
-        // }
+        onClick={() =>
+          nav(`/search?topPick`)
+        }
         className="hover:bg-transparent focus:bg-transparent border-b-2 font-semibold border-black cursor-pointer rounded-none inline-flex px-0">
         View More
       </Button>
