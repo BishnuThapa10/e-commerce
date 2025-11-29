@@ -103,6 +103,24 @@ const furnitureSchema = new mongoose.Schema({
   },
 }, { timestamps: true });
 
+// pre-save hook to insure only one featured product
+furnitureSchema.pre("save", async function (next) {
+  try {
+    if (!this.isModified("isFeatured") || !this.isFeatured) {
+      return next();
+    }
+
+    await this.constructor.updateMany(
+      { isFeatured: true, _id: { $ne: this._id } },
+      { isFeatured: false }
+    );
+    next();
+  } catch (err) {
+    next(err);
+  }
+
+});
+
 // Pre-save hook to automatically attach hex from color name
 furnitureSchema.pre("save", function (next) {
   const colorMap = new Map(colorsEnum.map(c => [c.name, c.hex]));
@@ -117,6 +135,8 @@ furnitureSchema.pre("save", function (next) {
 
   next();
 });
+
+furnitureSchema.index({ category: 1, "ratings.average": -1, isFeatured: 1 });
 
 const Furniture = mongoose.model('Furniture', furnitureSchema);
 export default Furniture;

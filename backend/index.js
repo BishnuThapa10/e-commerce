@@ -6,6 +6,7 @@ import furnitureRoute from './routes/furnitureRoutes.js';
 import userRoute from './routes/userRoutes.js';
 import orderRoute from './routes/orderRoute.js';
 import reviewRoute from './routes/reviewRoute.js';
+import homePageRoute from './routes/homePageRoute.js';
 
 
 dotenv.config();
@@ -36,6 +37,7 @@ app.use(furnitureRoute);
 app.use(userRoute);
 app.use(orderRoute);
 app.use(reviewRoute);
+app.use(homePageRoute);
 
 
 app.use((req, res, next) => {
