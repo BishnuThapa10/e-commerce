@@ -9,6 +9,9 @@ import { Button } from '../../components/ui/button.jsx';
 import { Input } from '../../components/ui/input.jsx';
 import { Formik } from 'formik';
 import { Textarea } from '../../components/ui/textarea.jsx';
+import { useCreateContactMutation } from './contactApi.js';
+import { Loader2 } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const ContactSchema = Yup.object().shape({
   name: Yup.string().min(3, "Atleast 3 character long!").max(20).required(),
@@ -18,6 +21,7 @@ const ContactSchema = Yup.object().shape({
 });
 
 export default function ContactPage() {
+  const [createContact, { isLoading }] = useCreateContactMutation();
   return (
     <div>
       <OtherPageHeroSection text="Contact" />
@@ -67,8 +71,26 @@ export default function ContactPage() {
             <Formik
               initialValues={{ name: "", email: "", subject: "", message: "" }}
               validationSchema={ContactSchema}
-              onSubmit={(values) => {
-                console.log(values);
+              onSubmit={async (val, { resetForm }) => {
+                try {
+                  const data = {
+                    name: val.name,
+                    email: val.email,
+                    subject: val.subject,
+                    message: val.message
+                  }
+
+                  const result = await createContact({ data }).unwrap();
+                  if (result.error) {
+                    const message = result.error?.data?.message || result.error?.error || "Something went wrong";
+                    toast.error(message)
+                  }
+                  resetForm();
+                  toast.success("Contact information successfully");
+                } catch (err) {
+                  const message = err?.data?.message || err?.error || "Something went wrong";
+                  toast.error(message);
+                }
               }}
             >
               {({ handleSubmit, handleChange, values, errors, touched, getFieldProps }) => (
@@ -144,10 +166,12 @@ export default function ContactPage() {
                   </div>
 
 
-                  <Button type="submit"
+                  <Button
+                    type="submit"
+                    disable={isLoading}
                     variant="outline"
                     className="border-black text-xs px-8"
-                  >Submit</Button>
+                  >{isLoading && <Loader2 className="animate-spin h-4 w-4" />}Submit</Button>
 
                 </form>
               )}

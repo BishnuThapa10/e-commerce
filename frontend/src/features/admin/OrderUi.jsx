@@ -17,8 +17,6 @@ export default function OrderUi() {
   if (error) return (
     <ErrorMessage message={error.data?.message} />
   );
-  console.log(orders);
-
   return (
     <>
       <div className='space-y-2'>
@@ -33,7 +31,7 @@ export default function OrderUi() {
                 <h6 className="font-medium text-sm">
                   {order._id}
                 </h6>
-                <h6 color="gray">
+                <h6 className='text-gray font-medium text-sm'>
                   {new Date(order.createdAt).toLocaleDateString()}
                 </h6>
               </div>

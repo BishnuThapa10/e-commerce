@@ -10,6 +10,7 @@ import {
   LogOut,
   Menu,
   Settings,
+  Mail,
   ShoppingCart,
   Users,
 } from "lucide-react";
@@ -20,6 +21,12 @@ const adminMenu = [
     title: "Dashboard",
     url: "/admin/dashboard",
     icon: Home,
+  },
+
+  {
+    title: "Users",
+    url: "/admin/contact",
+    icon: Mail,
   },
   // {
   //   title: "Users",
@@ -69,27 +76,27 @@ export default function AdminLayout() {
         <header className="bg-white border-b px-6 h-10 flex items-center justify-between">
           {/* {collapsed && <h2 className="text-sm text-gray-600">Admin Dashboard</h2>} */}
           <h2 className="text-sm text-gray-600">Admin Dashboard</h2>
-          <nav className="flex justify-center space-x-2">
-          {adminMenu.map((item) => (
-            <Link
-              key={item.title}
-              to={item.url}
-              className="flex items-center gap-3 p-2 hover:bg-gray-200 rounded-md"
+          <nav className="flex justify-center space-x-1">
+            {adminMenu.map((item) => (
+              <Link
+                key={item.title}
+                to={item.url}
+                className="flex items-center gap-3 p-2 hover:bg-gray-200 rounded-md"
+              >
+                <item.icon className="w-4 h-4" />
+                {!collapsed && <span>{item.title}</span>}
+              </Link>
+            ))}
+
+            <button
+              onClick={logout}
+              className="flex items-center gap-3 p-2 w-full hover:bg-gray-200 rounded-md cursor-pointer"
             >
-              <item.icon className="w-4 h-4" />
-              {!collapsed && <span>{item.title}</span>}
-            </Link>
-          ))}
+              <LogOut className="w-4 h-4" />
+              {!collapsed && <span>Logout</span>}
+            </button>
 
-          <button
-            onClick={logout}
-            className="flex items-center gap-3 p-2 w-full hover:bg-gray-200 rounded-md cursor-pointer"
-          >
-            <LogOut className="w-4 h-4" />
-            {!collapsed && <span>Logout</span>}
-          </button>
-
-        </nav>
+          </nav>
         </header>
 
         {/* Dynamic Page Content */}

@@ -19,6 +19,8 @@ import AddItems from './features/admin/AddItems.jsx';
 import UpdateItems from './features/admin/UpdateItems.jsx';
 import OrderUi from './features/admin/OrderUi.jsx';
 import Search from './features/search/Search.jsx';
+import About from './features/about/About.jsx';
+import ShowContact from './features/admin/ShowContact.jsx';
 
 export default function App() {
   const router = createBrowserRouter([
@@ -32,6 +34,7 @@ export default function App() {
         { path: 'contact', element: <ContactPage /> },
         { path: 'blog', element: <Blog /> },
         { path: 'search', element: <Search /> },
+        { path: 'about', element: <About /> },
 
 
         // Prevent login page after logging in
@@ -69,6 +72,7 @@ export default function App() {
             { path: "addItems", element: <AddItems /> },
             { path: "update-items/:id", element: <UpdateItems /> },
             { path: "orders", element: <OrderUi /> },
+            { path: "contact", element: <ShowContact /> },
           ]
         }
       ]
