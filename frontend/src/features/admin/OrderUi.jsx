@@ -5,7 +5,7 @@ import ErrorMessage from '../../components/website/ErrorMessage.jsx';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '../../components/ui/dialog.jsx';
 
 export default function OrderUi() {
-  const { isLoading, error, data: orders } = useGetAllOrderQuery();
+  const { isLoading, isError, error, data: orders } = useGetAllOrderQuery();
   const [open, setOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
 
@@ -14,8 +14,8 @@ export default function OrderUi() {
     setOpen(true);
   };
   if (isLoading) return <Loader text="Please Wait..." />;
-  if (error) return (
-    <ErrorMessage message={error.data?.message} />
+  if (isError) return (
+    <ErrorMessage message={error.data?.message || error?.message || 'Something went wrong'} />
   );
   return (
     <>

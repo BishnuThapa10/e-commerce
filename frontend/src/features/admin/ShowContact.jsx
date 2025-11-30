@@ -7,7 +7,7 @@ import { AiFillDelete } from 'react-icons/ai'
 import toast from 'react-hot-toast';
 
 export default function ShowContact() {
-  const { isLoading, error, data: contacts } = useGetAllContactQuery();
+  const { isLoading, isError, error, data: contacts } = useGetAllContactQuery();
   const [open, setOpen] = useState(false);
   const [selectedContact, setSelectedContact] = useState(null);
   const [removeItem, { isLoading: isDeleting }] = useDeleteContactMutation();
@@ -28,8 +28,8 @@ export default function ShowContact() {
     }
   }
   if (isLoading) return <Loader text="Please Wait..." />;
-  if (error) return (
-    <ErrorMessage message={error.data?.message} />
+  if (isError) return (
+    <ErrorMessage message = { error.data?.message || error?.message || 'Something went wrong' } />
   );
   return (
     <>

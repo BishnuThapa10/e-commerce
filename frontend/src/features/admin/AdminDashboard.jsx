@@ -9,10 +9,16 @@ import ErrorMessage from '../../components/website/ErrorMessage.jsx';
 import DeleteItem from './DeleteItem.jsx';
 
 export default function AdminDashboard() {
-  const { isLoading, error, data } = useGetAllProductQuery();
+  const { isLoading, isError, error, data } = useGetAllProductQuery();
   if (isLoading) return <Loader text="Please Wait..." />;
-  if (error) return (
-    <ErrorMessage message={error.data?.message} />
+  if (isError) return (
+    <ErrorMessage
+      message={
+        error?.data?.message ||
+        error?.message ||
+        'Something went wrong'
+      }
+    />
   );
   return (
     <div className="max-h-[90vh] overflow-y-auto rounded-md border relative">

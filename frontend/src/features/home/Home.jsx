@@ -9,16 +9,17 @@ import { useGetCategoryQuery, useGetHeroQuery, useGetNewQuery } from './homeApi.
 import Loader from '../../components/website/Loader.jsx'
 
 export default function Home() {
-  const { isLoading: heroLoading, data: hero } = useGetHeroQuery();
-  const { isLoading: categoryLoading, data: category } = useGetCategoryQuery();
-  const { isLoading: newLoading, data: newArrival } = useGetNewQuery();
+  const { isLoading: heroLoading, isError: heroError, data: hero } = useGetHeroQuery();
+  const { isLoading: categoryLoading, isError: categoryError, data: category } = useGetCategoryQuery();
+  const { isLoading: newLoading, isError: newError, data: newArrival } = useGetNewQuery();
   if (heroLoading || categoryLoading || newLoading) return <Loader text="Please Wait..." />;
+  if (heroError || categoryError || newError) return ( <ErrorMessage message={"Something went wrong"} />);
   return (
     <div>
-      <HeroSection hero = {hero} />
-      <TopSection category = {category} />
+      <HeroSection hero={hero} />
+      <TopSection category={category} />
       <TopPick />
-      <NewArrivals newArrival = {newArrival} />
+      <NewArrivals newArrival={newArrival} />
       <BlogSection />
       <InstagramSection />
     </div>

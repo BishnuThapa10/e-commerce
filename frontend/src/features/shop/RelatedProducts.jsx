@@ -7,11 +7,11 @@ import { useGetAllProductQuery } from '../product/productApi.js';
 import { useNavigate } from 'react-router';
 
 export default function RelatedProducts({ relatedTo }) {
-  const { isLoading, error, data } = useGetAllProductQuery({ relatedTo, limit: 4 });
+  const { isLoading, isError, error, data } = useGetAllProductQuery({ relatedTo, limit: 4 });
   const nav = useNavigate();
   if (isLoading) return <Loader text="Please Wait..." />;
-  if (error) return (
-    <ErrorMessage message={error.data?.message} />
+  if (isError) return (
+    <ErrorMessage message={error.data?.message || "Error"} />
   );
   return (
     <div className='flex flex-col gap-4 items-center justify-center p-2'>
@@ -21,7 +21,10 @@ export default function RelatedProducts({ relatedTo }) {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-8 place-items-center">
 
         {data && data.furniture.map(({ _id, name, price, images }) => (
-          <div key={_id} className='flex flex-col items-center justify-center gap-2 overflow-hidden max-w-xs w-full h-60'>
+          <div
+            key={_id}
+            className='flex flex-col items-center justify-center gap-2 overflow-hidden max-w-xs w-full h-60'
+            onClick={() => nav(`/furniture/${_id}`)}>
             <div className='w-full md:h-[80%] overflow-hidden'>
               <img src={images[0].url} alt={name} className='w-full h-full object-cover object-center hover:scale-105 transition-all duration-300' />
             </div>

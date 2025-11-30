@@ -34,13 +34,13 @@ const valSchema = Yup.object({
 
 export default function UpdateItems() {
   const { id } = useParams();
-  const { data, isLoading, error } = useGetSingleItmeQuery(id);
+  const { data, isLoading, isError, error } = useGetSingleItmeQuery(id);
   const [updateItem, { isLoading: isUpdating }] = useUpdateItemMutation()
   const nav = useNavigate();
 
   if (isLoading) return <Loader text="Please Wait..." />;
-  if (error) return (
-    <ErrorMessage message={error.data?.message} />
+  if (isError) return (
+    <ErrorMessage message={error.data?.message || error?.message || 'Something went wrong'} />
   );
   return (
     <>
@@ -75,7 +75,7 @@ export default function UpdateItems() {
               formData.append("isFeatured", val.isFeatured);
 
               // Send arrays correctly
-              val.size.forEach((s) => {formData.append("size[]", s)});
+              val.size.forEach((s) => { formData.append("size[]", s) });
 
               // colors array of objects
               val.colors.forEach((color, index) => {

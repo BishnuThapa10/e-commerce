@@ -18,7 +18,7 @@ export default function Search() {
     sort = "-ratings.average";
   }
 
-  const { data, isLoading, error } = useGetAllProductQuery({
+  const { data, isLoading, isError, error } = useGetAllProductQuery({
     search: q,
     relatedTo,
     sort,
@@ -27,7 +27,7 @@ export default function Search() {
   });
 
   if (isLoading) return <Loader text="Searching products..." />;
-  if (error)
+  if (isError)
     return <ErrorMessage message={error?.data?.message || "Error"} />;
 
   let heading = "All Products";

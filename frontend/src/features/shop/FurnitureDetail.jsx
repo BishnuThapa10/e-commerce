@@ -17,7 +17,7 @@ import RelatedProducts from './RelatedProducts.jsx';
 
 export default function FurnitureDetail() {
   const { id } = useParams();
-  const { data, error, isLoading } = useGetSingleItmeQuery(id);
+  const { data, isError, error, isLoading } = useGetSingleItmeQuery(id);
   // const value = 3.5;
   const starSize = 24;
   const maxStars = 5;
@@ -33,8 +33,8 @@ export default function FurnitureDetail() {
   }, [data]);
 
   if (isLoading) return <Loader text="Please Wait..." />;
-  if (error) return (
-    <ErrorMessage message={error.data?.message} />
+  if (isError) return (
+    <ErrorMessage message={error.data?.message || "Error"} />
   );
   // console.log(data);
   return (

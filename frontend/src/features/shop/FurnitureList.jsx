@@ -17,10 +17,10 @@ export default function FurnitureList() {
   const sort = sortParams.get("sort") || "none";
   const limit = Number(sortParams.get("limit") || 8)
   const nav = useNavigate();
-  const { isLoading, error, data } = useGetAllProductQuery({ page, sort, limit, fields: 'name,price,images' });
+  const { isLoading, isError, error, data } = useGetAllProductQuery({ page, sort, limit, fields: 'name,price,images' });
   if (isLoading) return <Loader text="Please Wait..." />;
-  if (error) return (
-    <ErrorMessage message={error.data?.message} />
+  if (isError) return (
+    <ErrorMessage message={error.data?.message || "Error"} />
   );
 
   const startItem = (page - 1) * limit + 1; // first item on the page
