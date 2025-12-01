@@ -46,7 +46,7 @@ export default function CartPage() {
           </TableHeader>
           <TableBody>
             {cart?.length > 0 ? (cart.map((item, i) => (
-              <TableRow>
+              <TableRow key={i}>
                 <TableCell className='flex gap-4 items-center'>
                   <div className='max-w-20 max-h-20 min-w-10 min-h-10 flex items-center justify-center bg-[#FFF9E5]'>
                     <img src={item.image} alt={item.name} className='max-h-full max-w-full object-cover' />
@@ -72,7 +72,7 @@ export default function CartPage() {
             ) : (
               <TableRow>
                 <TableCell
-                  colspan={5}
+                  colSpan={5}
                   className="text-center py-4 text-gray-500">
                   Your cart is empty
                 </TableCell>

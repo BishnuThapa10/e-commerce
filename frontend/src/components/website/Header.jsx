@@ -1,22 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from '../ui/navigation-menu.jsx';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu.jsx';
 import { TbUserExclamation } from 'react-icons/tb';
 import { TbUserCheck } from "react-icons/tb";
-import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet.jsx';
+import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from '../ui/sheet.jsx';
 import { RiSearchLine } from "react-icons/ri";
 import { FaRegHeart } from "react-icons/fa6";
 import { HiOutlineShoppingCart } from "react-icons/hi";
 import { getAutUser } from '../../lib/auth.js';
 import { useDispatch } from 'react-redux';
 import { removeUser } from '../../features/account/userSlice.js';
+import { clearCart } from '../../features/cart/cartSlice.js';
 
 export default function Header() {
   const { pathname } = useLocation();
   const nav = useNavigate();
   const auth = getAutUser();
   const dispatch = useDispatch();
+  const [open, setOpen] = useState(false);
   const links = [
     { to: "/", label: "Home" },
     { to: "/shop", label: "Shop" },
@@ -24,7 +26,10 @@ export default function Header() {
     { to: "/contact", label: "Contact" },
   ];
 
-  const handleUser = async () => {
+  const handleUser = async (closeSheet) => {
+    if (typeof closeSheet === "function") {
+      closeSheet(false);
+    }
     if (!auth) {
       nav("/account", { replace: true });
       return;
@@ -41,6 +46,7 @@ export default function Header() {
     try {
       // Dispatch your delete action (can be async)
       dispatch(removeUser());
+      dispatch(clearCart());
       // Optionally navigate somewhere after deletion
       nav("/", { replace: true });
     } catch (error) {
@@ -135,26 +141,82 @@ export default function Header() {
           </div>
         </div>
         {/* Mobile Menu */}
-        <Sheet>
+        <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger className="md:hidden text-2xl">☰</SheetTrigger>
-          <SheetContent side="left">
-            <div className="flex flex-col gap-6 mt-12 ml-4 text-lg">
+
+          <SheetContent side="left" className="flex flex-col p-0">
+            {/* Header */}
+            <div className="border-b px-6 py-4">
+              <SheetTitle className="text-xl font-semibold">
+                Menu
+              </SheetTitle>
+              <SheetDescription className="text-sm text-muted-foreground">
+                Navigate pages, account, and shopping tools
+              </SheetDescription>
+            </div>
+
+            {/* Navigation */}
+            <nav className="flex-1 px-6 py-6 space-y-4 text-lg">
               {links.map((link) => (
                 <NavLink
                   key={link.to}
                   to={link.to}
+                  onClick={() => setOpen(false)}
                   className={({ isActive }) =>
-                    isActive
-                      ? "text-primary font-semibold"
-                      : "text-gray-700 "
+                    `block rounded-md px-2 py-2 transition
+             ${isActive
+                      ? "text-primary font-semibold bg-accent"
+                      : "text-gray-700 hover:bg-accent hover:text-primary"
+                    }`
                   }
                 >
                   {link.label}
                 </NavLink>
               ))}
+            </nav>
+
+            {/* Actions */}
+            <div className="border-t px-6 py-4 flex items-center justify-between">
+              <button
+                onClick={() => handleUser(setOpen)}
+                className="w-10 h-10 flex items-center justify-center rounded-md hover:bg-accent transition"
+              >
+                {!auth ? (
+                  <TbUserExclamation className="w-5 h-5" />
+                ) : (
+                  <TbUserCheck className="w-5 h-5" />
+                )}
+              </button>
+
+              <button
+                onClick={() => {
+                  setOpen(false);
+                  nav("/search");
+                }}
+                className="w-10 h-10 flex items-center justify-center rounded-md hover:bg-accent transition"
+              >
+                <RiSearchLine className="w-5 h-5" />
+              </button>
+
+              <button
+                className="w-10 h-10 flex items-center justify-center rounded-md hover:bg-accent transition"
+              >
+                <FaRegHeart className="w-5 h-5" />
+              </button>
+
+              <button
+                onClick={() => {
+                  setOpen(false);
+                  nav("/cart");
+                }}
+                className="w-10 h-10 flex items-center justify-center rounded-md hover:bg-accent transition"
+              >
+                <HiOutlineShoppingCart className="w-5 h-5" />
+              </button>
             </div>
           </SheetContent>
         </Sheet>
+
       </div>
     </header>
   )

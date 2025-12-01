@@ -3,6 +3,7 @@ import { useGetAllOrderQuery } from '../product/orderApi.js';
 import Loader from '../../components/website/Loader.jsx';
 import ErrorMessage from '../../components/website/ErrorMessage.jsx';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '../../components/ui/dialog.jsx';
+import { formatPrice } from '../../lib/priceFormat.js';
 
 export default function OrderUi() {
   const { isLoading, isError, error, data: orders } = useGetAllOrderQuery();
@@ -37,7 +38,7 @@ export default function OrderUi() {
               </div>
               <div className="text-right">
                 <h6 className='text-gray text-sm'>
-                  Rs.{order.totalAmount}
+                  {formatPrice(order.totalAmount)}
                 </h6>
               </div>
             </div>
@@ -67,7 +68,7 @@ export default function OrderUi() {
                   {new Date(selectedOrder.createdAt).toLocaleDateString()}
                 </p>
                 <p className='text-sm text-gray'>
-                  Total: {selectedOrder.totalAmount}
+                  Total: {formatPrice(selectedOrder.totalAmount)}
                 </p>
               </div>
               <div>
@@ -84,7 +85,7 @@ export default function OrderUi() {
                           className="max-h-full max-w-full object-cover"
                         />
                       </div>
-                      {item.name} — {item.quantity} × {item.price} ({item.color}) ({item.size})
+                      {item.name} — {item.quantity} × {formatPrice(item.price)} ({item.color}) ({item.size})
                     </li>
                   ))}
                 </ul>

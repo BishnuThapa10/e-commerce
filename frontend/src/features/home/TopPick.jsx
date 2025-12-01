@@ -24,7 +24,10 @@ export default function TopPick() {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-8 place-items-center">
 
         {data && data.furniture.map(({ _id, name, price, images }) => (
-          <div key={_id} className='flex flex-col items-center justify-center gap-2 overflow-hidden max-w-xs w-full h-60'>
+          <div 
+          onClick={() => nav(`/furniture/${_id}`)}
+          key={_id} 
+          className='flex flex-col items-center justify-center gap-2 overflow-hidden max-w-xs w-full h-60'>
             <div className='w-full md:h-[80%] overflow-hidden'>
               <img src={images[0].url} alt={name} className='w-full h-full object-cover object-center hover:scale-105 transition-all duration-300' />
             </div>
